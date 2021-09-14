@@ -1,0 +1,81 @@
+# Version=1.7.0
+# udev rule to recognize instruments and make them accessible to user applications.
+# Copy this to /etc/udev/rules.d/55-Argyll.rules
+# or           /usr/lib/udev/rules.d/55-Argyll.rules
+# and remove   /usr/lib/udev/rules.d/69-cd-sensors.rules
+# as appropriate for your system
+# NOTE that hex values must be lower case!
+
+#--------------------------------------------------------------------------
+# Copyright 2012 Graeme W. Gill.
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this file, to deal in this file without restriction, including without
+# limitation the rights to use, copy, modify, merge, publish, distribute,
+# sublicense, and/or sell copies of this file, and to permit persons to whom
+# this file is furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of this file.
+# 
+# THIS FILE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THIS FILE OR THE USE OR OTHER DEALINGS IN
+# THIS FILE.
+#--------------------------------------------------------------------------
+
+# Skip all this to speed things up if it'a not a usb add.
+ACTION!="add", GOTO="argyll_rules_end"
+SUBSYSTEM!="usb", GOTO="argyll_rules_end"
+
+# Recognize the color measurement devices
+# COLORD_SENSOR_KIND, COLORD_SENSOR_CAPS, COLORD_SENSOR_EMBEDDED, COLORD_IGNORE
+# are for the benefit of Gnome Color Manager - ArgyllCMS doesn't use them.  
+
+# Spyder 1
+ATTRS{idVendor}=="085c", ATTRS{idProduct}=="0100", ENV{COLORD_SENSOR_KIND}="spyder1" ENV{COLORD_SENSOR_CAPS}="lcd crt"
+
+# Spyder 2
+ATTRS{idVendor}=="085c", ATTRS{idProduct}=="0200", ENV{COLORD_SENSOR_KIND}="spyder2" ENV{COLORD_SENSOR_CAPS}="lcd crt"
+
+# Spyder 3
+ATTRS{idVendor}=="085c", ATTRS{idProduct}=="0300", ENV{COLORD_SENSOR_KIND}="spyder3" ENV{COLORD_SENSOR_CAPS}="lcd crt ambient"
+
+# Spyder 4
+ATTRS{idVendor}=="085c", ATTRS{idProduct}=="0400", ENV{COLORD_SENSOR_KIND}="spyder4" ENV{COLORD_SENSOR_CAPS}="lcd crt ambient"
+
+# Spyder 5
+ATTRS{idVendor}=="085c", ATTRS{idProduct}=="0500", ENV{COLORD_SENSOR_KIND}="spyder5" ENV{COLORD_SENSOR_CAPS}="lcd crt ambient"
+
+# Spyder X
+ATTRS{idVendor}=="085c", ATTRS{idProduct}=="0a00", ENV{COLORD_SENSOR_KIND}="spyderX" ENV{COLORD_SENSOR_CAPS}="lcd crt ambient"
+
+
+
+#########################################################
+
+# Set ID_VENDOR and ID_MODEL acording to VID and PID
+#TEST=="/lib/udev/usb-db", IMPORT{program}="usb-db %p"
+ENV{COLORD_SENSOR_KIND}=="*?", ENV{ID_MODEL}=="", IMPORT{program}="usb_id --export %p"
+ENV{COLORD_SENSOR_KIND}=="*?", ENV{ID_MODEL_FROM_DATABASE}=="", IMPORT{program}="usb-db %p"
+
+# Is a color calibration device. 70-uaccess.rules may use this to set TAG+="uaccess",
+# but there is no way to know if this is the case from here.
+# May also be used by other rules to avoid claiming this device.
+ENV{COLORD_SENSOR_KIND}=="*?", ENV{COLOR_MEASUREMENT_DEVICE}="1"
+
+# Let ConsoleKit udev-acl manage these devices, if it's available.
+# (Except that this stuffs up on Slackware 14.1 because
+#  ConsoleKit/database is present even when ACL is not enabled).
+# Some recent systems no longer use ConsoleKit or ACL_MANAGE - acl is done by systemd ?
+# TEST=="/var/run/ConsoleKit/database", ENV{COLOR_MEASUREMENT_DEVICE}=="*?", ENV{ACL_MANAGE}="1"
+ENV{COLOR_MEASUREMENT_DEVICE}=="*?", ENV{ACL_MANAGE}="1"
+
+# In any case, make color instruments accessible to members of the colord group,
+# which the user may have to add to the system and add themselves to if ACL isn't present.
+ENV{COLOR_MEASUREMENT_DEVICE}=="*?", MODE="660", GROUP="colord"
+
+LABEL="argyll_rules_end"

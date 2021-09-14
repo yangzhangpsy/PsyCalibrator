@@ -1,0 +1,163 @@
+; Copyright 2013-2017 Cambridge Research Systems Ltd.
+ 
+[Strings]
+ManufacturerName="Cambridge Research Systems Ltd."
+ServiceName="USB CDC ACM Class Driver"
+colorcal.mkii.Name="CRS ColorCAL MKII Colorimeter - USB CDC ACM Driver"
+bits.sharp.Name="CRS Bits# Stimulus Processor - USB CDC ACM Driver"
+visage.mkii.Name="CRS ViSaGe MKII Stimulus Generator - USB CDC ACM Driver"
+lm.i.Name="CRS LM1 Light Meter - USB CDC ACM Driver"
+lm.ii.Name="CRS LM2 Densitometer - USB CDC ACM Driver"
+lm.iii.Name="CRS LM3 Light Meter - USB CDC ACM Driver"
+livetrack.av.Name="CRS LiveTrack AV for fMRI - USB CDC ACM Driver"
+livetrack.fm.Name="CRS LiveTrack FM Fixation Monitor - USB CDC ACM Driver"
+livetrack.ap.Name="CRS LiveTrack AP Pupilometer - USB CDC ACM Driver"
+livetrack.presto.Name="CRS LiveTrack Presto - USB CDC ACM Driver"
+boldscreen.twenty.four.Name="CRS BOLDscreen 24 MR Safe LCD Monitor - USB CDC ACM Driver"
+display.plusplus.bits.sharp.Name="CRS Display++ LCD Monitor in Bits# Mode - USB CDC ACM Driver"
+display.plusplus.monitor.Name="CRS Display++ LCD Monitor in Monitor Mode - USB CDC ACM Driver"
+display.plusplus.visage.Name="CRS Display++ LCD Monitor in ViSaGe Mode - USB CDC ACM Driver"
+audiofile.Name="CRS AudioFile - USB CDC ACM Driver"
+
+[DefaultInstall]
+CopyINF=crsltd_usb_cdc_acm.inf
+ 
+[Version]
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
+Signature="$Windows NT$"
+Provider=%ManufacturerName%
+CatalogFile=crsltd_usb_cdc_acm.cat
+DriverVer=02/09/2017,1.2.0.0
+ 
+[Manufacturer]
+%ManufacturerName%=DeviceList, NTamd64
+ 
+[DestinationDirs]
+FakeModemCopyFileSection=12
+DefaultDestDir=12
+
+;---------------------------------------------------------------------- 
+[DeviceList]
+; ColorCAL MKII:CDC
+%colorcal.mkii.Name%=DriverInstall, USB\VID_0861&PID_1001
+
+; Bits#:CDC
+%bits.sharp.Name%=DriverInstall, USB\VID_0861&PID_1072
+
+; Bits#:CDC+MSD
+%bits.sharp.Name%=DriverInstall, USB\VID_0861&PID_1074&MI_01
+
+; ViSaGe:CDC no MSD
+%visage.mkii.Name%=DriverInstall, USB\VID_0861&PID_1093&MI_01
+
+; LM 1-3 devices:CDC
+%lm.i.Name%=DriverInstall, USB\VID_0861&PID_0512
+%lm.ii.Name%=DriverInstall, USB\VID_0861&PID_0510
+%lm.iii.Name%=DriverInstall, USB\VID_0861&PID_0511
+
+; LiveTrack devices
+; LiveTrack AV
+%livetrack.av.Name%=DriverInstall, USB\VID_0861&PID_3412&MI_00
+
+;LiveTrack FM
+%livetrack.fm.Name%=DriverInstall, USB\VID_0861&PID_3410&MI_03
+
+; LiveTrack AP
+%livetrack.ap.Name%=DriverInstall, USB\VID_0861&PID_3411&MI_03
+
+; LiveTrack Presto
+%livetrack.presto.Name%=DriverInstall, USB\VID_0861&PID_3433&MI_03
+
+; BOLDscreen 24:CDC
+%boldscreen.twenty.four.Name%=DriverInstall, USB\VID_0861&PID_1108
+
+; Display++:Bits# mode CDC and CDC+MSD
+%display.plusplus.bits.sharp.Name%=DriverInstall, USB\VID_0861&PID_1204
+%display.plusplus.bits.sharp.Name%=DriverInstall, USB\VID_0861&PID_120C&MI_01
+
+; Display++:Monitor mode CDC and CDC+MSD
+%display.plusplus.monitor.Name%=DriverInstall, USB\VID_0861&PID_1224
+%display.plusplus.monitor.Name%=DriverInstall, USB\VID_0861&PID_122C&MI_01
+
+; Display++:ViSaGe mode CDC no MSD
+%display.plusplus.visage.Name%=DriverInstall, USB\VID_0861&PID_1248&MI_01
+
+; AudioFile mode CDC and CDC+MSD
+%audiofile.Name%=DriverInstall, USB\VID_0861&PID_5005
+%audiofile.Name%=DriverInstall, USB\VID_0861&PID_5010&MI_01
+
+;---------------------------------------------------------------------
+[DeviceList.NTamd64]
+
+; ColorCAL MKII:CDC
+%colorcal.mkii.Name%=DriverInstall, USB\VID_0861&PID_1001
+
+; Bits#:CDC
+%bits.sharp.Name%=DriverInstall, USB\VID_0861&PID_1072
+
+; Bits#:CDC+MSD
+%bits.sharp.Name%=DriverInstall, USB\VID_0861&PID_1074&MI_01
+
+; ViSaGe:CDC no MSD
+%visage.mkii.Name%=DriverInstall, USB\VID_0861&PID_1093&MI_01
+
+; LM 1-3 devices:CDC
+%lm.i.Name%=DriverInstall, USB\VID_0861&PID_0512
+%lm.ii.Name%=DriverInstall, USB\VID_0861&PID_0510
+%lm.iii.Name%=DriverInstall, USB\VID_0861&PID_0511
+
+; LiveTrack devices
+; LiveTrack AV
+%livetrack.av.Name%=DriverInstall, USB\VID_0861&PID_3412&MI_00
+
+;LiveTrack FM
+%livetrack.fm.Name%=DriverInstall, USB\VID_0861&PID_3410&MI_03
+
+; LiveTrack AP
+%livetrack.ap.Name%=DriverInstall, USB\VID_0861&PID_3411&MI_03
+
+; LiveTrack Presto
+%livetrack.presto.Name%=DriverInstall, USB\VID_0861&PID_3433&MI_03
+
+; BOLDscreen 24:CDC
+%boldscreen.twenty.four.Name%=DriverInstall, USB\VID_0861&PID_1108
+
+; Display++:Bits# mode CDC and CDC+MSD
+%display.plusplus.bits.sharp.Name%=DriverInstall, USB\VID_0861&PID_1204
+%display.plusplus.bits.sharp.Name%=DriverInstall, USB\VID_0861&PID_120C&MI_01
+
+; Display++:Monitor mode CDC and CDC+MSD
+%display.plusplus.monitor.Name%=DriverInstall, USB\VID_0861&PID_1224
+%display.plusplus.monitor.Name%=DriverInstall, USB\VID_0861&PID_122C&MI_01
+
+; Display++:ViSaGe mode CDC no MSD
+%display.plusplus.visage.Name%=DriverInstall, USB\VID_0861&PID_1248&MI_01
+
+; AudioFile mode CDC and CDC+MSD
+%audiofile.Name%=DriverInstall, USB\VID_0861&PID_5005
+%audiofile.Name%=DriverInstall, USB\VID_0861&PID_5010&MI_01
+
+;------------------------------------------------------------------------
+ 
+[DriverInstall]
+include=mdmcpq.inf,usb.inf
+CopyFiles = FakeModemCopyFileSection
+AddReg=DriverAddReg
+ 
+[DriverAddReg]
+HKR,,DevLoader,,*ntkern 
+HKR,,NTMPDriver,,usbser.sys 
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+ 
+[DriverInstall.Services]
+include=mdmcpq.inf
+AddService=usbser, 0x00000002, DriverService
+ 
+[DriverService]
+DisplayName=%ServiceName%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\usbser.sys
+LoadOrderGroup=Base
