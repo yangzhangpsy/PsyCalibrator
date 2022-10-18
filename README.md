@@ -80,7 +80,11 @@ To resolve this issue, you can run the program provided in the package called �
 
 <h2 id="3">Step 3: Make “PsyCalibrator” accessible to MATLAB</h2>
 
-We need to add the “PsyCalibrator” folder to MATLAB so that the included functions can be accessed within MATLAB. To do so, open the MATLAB software. In the command window, add the “PsyCalibrator” folder to MATLAB by using the following command: "addpath(genpath(Path)); savepath;", where “Path” should be replaced with the actual file path for PsyCalibrator in your computer, such as ‘D:/PsyCalibrator’ (as highlighted by Section 1 in Figure 8). Note that in this tutorial, the command text is colored blue, and variables that need to be changed are colored red; anything else, such as quotes that are not colored blue or red should not be included in the command.
+We need to add the “PsyCalibrator” folder to MATLAB so that the included functions can be accessed within MATLAB. To do so, open the MATLAB software. In the command window, add the “PsyCalibrator” folder to MATLAB by using the following command: 
+
+        >> addpath(genpath(Path)); savepath;
+
+Where “Path” should be replaced with the actual file path for PsyCalibrator in your computer, such as ‘D:/PsyCalibrator’ (as highlighted by Section 1 in Figure 8). Note that in this tutorial, the command text is colored blue, and variables that need to be changed are colored red; anything else, such as quotes that are not colored blue or red should not be included in the command.
 
 You only need to do this once—if you have already added the “PsyCalibrator” folder to MATLAB paths, you don’t need to do it again next time. 
 
