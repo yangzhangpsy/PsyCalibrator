@@ -20,21 +20,23 @@ This is the step-by-step photometer tutorial portion of the article. The tutoria
 <h2 id="1">Step 1: Obtain required instrument and software</h2>
 
 1. Instrument: 
-Spyder5 or SpyderX
-Note: SpyderX is the newer model. For both Spyder5 and SpyderX, there are different versions available, but the only difference between the different versions (e.g., Express, Pro, and Elite) is the accompanying software package provided by Spyder. Since our calibration method does not use this provided software, but only the hardware, any version of Spyder will work.
+`Spyder5` or `SpyderX`
+
+**Note:** `SpyderX` is the newer model. For both `Spyder5` and `SpyderX`, there are different versions available, but the only difference between the different versions (e.g., Express, Pro, and Elite) is the accompanying software package provided by Spyder. Since our calibration method does not use this provided software, but only the hardware, any version of Spyder will work.
 
 2. Software: 
 1) MATLAB (common commercial software) or GNU Octave (a free alternative to MATLAB; for simplicity, below we will refer to MATLAB only) and Psychtoolbox (free software available at http://psychtoolbox.org)
 2) PsyCalibrator (free at: https://github.com/yangzhangpsy/PsyCalibrator)
-Note: The software package includes both original files provided by the authors as well as files written by others (specifically, the file “spyderDriverWin” is extracted from Argyll V2.1.2, available at http://www.argyllcms.com; the file “makeCLUT_APL” is modified from Mcalibrator2, available at https://github.com/hiroshiban/Mcalibrator2)
+
+**Note:** The software package includes both original files provided by the authors as well as files written by others (specifically, the file “spyderDriverWin” is extracted from Argyll V2.1.2, available at http://www.argyllcms.com; the file “makeCLUT_APL” is modified from Mcalibrator2, available at https://github.com/hiroshiban/Mcalibrator2)
 
 <h2 id="2">Step 2: Install Spyder driver</h2>
 
-If you are using Linux or Mac, there is no need to install the driver for the photometer. But if you are using Windows, you need to install the driver for the photometer. To check whether the driver is already installed, insert the device (e.g., Spyder5) into a USB port on the computer. Then open the "Device Manager" menu in Windows Settings (you can search "Device Manager" in the search bar at the bottom left of the desktop). If the driver has already been installed, you should see a USB icon showing “Spyder5 (Argyll)”, as highlighted in the red rectangle in Figure 1.
+If you are using Linux or Mac, there is no need to install the driver for the photometer. But if you are using Windows, you need to install the driver for the photometer. To check whether the driver is already installed, insert the device (e.g., `Spyder5`) into a USB port on the computer. Then open the "Device Manager" menu in Windows Settings (you can search "Device Manager" in the search bar at the bottom left of the desktop). If the driver has already been installed, you should see a USB icon showing “`Spyder5` (Argyll)”, as highlighted in the red rectangle in Figure 1.
 
  ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f1.png)
  
-**Figure 1. Device Manager showing Spyder5 with the driver installed.** 
+**Figure 1. Device Manager showing `Spyder5` with the driver installed.** 
 
 On the other hand, if the driver has not been installed, then you may see an exclamation mark (!) appearing before the device name, as highlighted in the red rectangle in Figure 2 (note that if you have installed the software that comes with Spyder, you will not see the exclamation mark). Or you may simply see the device under “Universal Serial Bus devices” (bottom, Figure 2). In either case, we need to install the calibration driver as offered in the “PsyCalibrator” package, by following the steps below.
 ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f2.png)
@@ -43,7 +45,7 @@ On the other hand, if the driver has not been installed, then you may see an exc
 
 **Figure 2. Device Manager showing the Spyder device with the driver not installed.**
 
-2.1. First, right-click on the device name “Datacolor Spyder5” (or “Datacoor SpyderX”), which should open up a menu as in Figure 3. Click "Update driver".
+2.1. First, right-click on the device name “Datacolor `Spyder5`” (or “Datacoor `SpyderX`”), which should open up a menu as in Figure 3. Click "Update driver".
 
  ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f3.png)
  
@@ -116,7 +118,7 @@ The above steps are for luminance and color measurement. We can also calibrate t
 
 Before calibration, make sure that no direct light shines on the monitor panel and that the monitor is turned on for at least 60 minutes to allow time for warm-up. Now, follow the steps below to begin the calibration process.
 
-5.1. Run the following command in MATLAB: "gammaMeasure_APL(deviceType)", where deviceType refers to the type of the Spyder device: 1 for Spyder5 and 2 for SpyderX. (For color channel calibration, use "gammaMeasure_APL(deviceType,[],[],[],[],[],[],2)".)
+5.1. Run the following command in MATLAB: "gammaMeasure_APL(deviceType)", where deviceType refers to the type of the Spyder device: 1 for `Spyder5` and 2 for `SpyderX`. (For color channel calibration, use "gammaMeasure_APL(deviceType,[],[],[],[],[],[],2)".)
 
         >> gammaMeasure_APL(deviceType,[],[],[],[],[],[],2);
 
@@ -179,7 +181,7 @@ The fitting result is saved to a new file named Gamma_fitted.mat within the same
 
         >> gammaMeasure_APL(deviceType,[],[],[],Gamma.gammaTable);
 
-where deviceType refers to the type of test device: 1 for Spyder5 and 2 for SpyderX. The procedure is the same as in Steps 5.2 to 5.7 above. Finally, the results are saved to the file “Gamma_verification.mat” (Figure 17). Linearity is visualized with a figure showing the relation between RGB and luminance (from the variable xyY in Gamma_verification.mat; Figure 18). For color channel calibration, use:
+where deviceType refers to the type of test device: 1 for `Spyder5` and 2 for `SpyderX`. The procedure is the same as in Steps 5.2 to 5.7 above. Finally, the results are saved to the file “Gamma_verification.mat” (Figure 17). Linearity is visualized with a figure showing the relation between RGB and luminance (from the variable xyY in Gamma_verification.mat; Figure 18). For color channel calibration, use:
 
         >> gammaMeasure_APL(deviceType,[],[],[], Gamma.gammaTable,[],[],2);
 ;
