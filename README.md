@@ -25,8 +25,8 @@ This is the step-by-step photometer tutorial portion of the article. The tutoria
 **Note:** `SpyderX` is the newer model. For both `Spyder5` and `SpyderX`, there are different versions available, but the only difference between the different versions (e.g., Express, Pro, and Elite) is the accompanying software package provided by Spyder. Since our calibration method does not use this provided software, but only the hardware, any version of Spyder will work.
 
 2. Software: 
-1) MATLAB (common commercial software) or GNU Octave (a free alternative to MATLAB; for simplicity, below we will refer to MATLAB only) and Psychtoolbox (free software available at http://psychtoolbox.org)
-2) PsyCalibrator (free at: https://github.com/yangzhangpsy/PsyCalibrator)
+ 1) MATLAB (common commercial software) or GNU Octave (a free alternative to MATLAB; for simplicity, below we will refer to MATLAB only) and Psychtoolbox (free software available at http://psychtoolbox.org)
+ 2) PsyCalibrator (free at: https://github.com/yangzhangpsy/PsyCalibrator)
 
 **Note:** The software package includes both original files provided by the authors as well as files written by others (specifically, the file “spyderDriverWin” is extracted from Argyll V2.1.2, available at http://www.argyllcms.com; the file “makeCLUT_APL” is modified from Mcalibrator2, available at https://github.com/hiroshiban/Mcalibrator2)
 
