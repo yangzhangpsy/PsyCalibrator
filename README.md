@@ -1,10 +1,9 @@
 # PsyCalibrator: an open-source package for display gamma calibration and luminance and color measurement
 
-Zhicheng Lin<sup>1</sup>, Qi Ma<sup>2</sup>, Yang Zhang<sup>2</sup>
+<center> Zhicheng Lin<sup>1</sup>, Qi Ma<sup>2</sup>, Yang Zhang<sup>2</sup> </center>
 
-1 School of Humanities and Social Science, The Chinese University of Hong Kong, Shenzhen, China 518172
-
-2 Department of Psychology, Soochow University, Suzhou, Jiangsu, China 215000
+<sup>1</sup> School of Humanities and Social Science, The Chinese University of Hong Kong, Shenzhen, China 518172
+<sup>2</sup> Department of Psychology, Soochow University, Suzhou, Jiangsu, China 215000
 
 This is the step-by-step photometer tutorial portion of the article. The tutorial includes the following seven steps. For luminance/color measurement, follow Steps 1 to 4; for monitor correction (linearization), follow all the steps except Step 4.
 
@@ -95,9 +94,15 @@ After installing the custom driver, Spyder is ready to take measurements of lumi
 
 To measure the luminance/color of a stimulus on the monitor, simply open the cover and point the Spyder sensor closely to the target stimulus on the screen. Measurement is not limited to the stimuli on the screen—you can also use it to measure the luminance/color of things around you. For maximum accuracy and transparency, 1) make sure the sensor area is smaller than the stimulus or else the measurement reflects not just the target stimulus but also the surrounding stimuli (when the target is too small, consider enlarging it); and 2) report the measurement distance (distance negatively affects luminance values if the object of interest is the sole or primary source of light).
 
-Then run "xyY = spyderRead_APL(refreshRate)", in which refreshRate is your display’s refresh rate number, such as 60 (HZ). The refresh rate describes how frequently your display refreshes the onscreen image. A 60 Hz screen refreshes images 60 times per second (i.e., every 16.67 ms). To find out the refresh rate, for Windows PCs, right click on the desktop screen, click the “Display settings” icon, then click the “Advanced display settings” icon. For macOS, click on the Mac icon on the top left, click “About This Mac”; on the pop-out menu, open the “Displays” tap.
+Then run：
+
+        >> xyY = spyderRead_APL(refreshRate);
+
+In which refreshRate is your display’s refresh rate number, such as 60 (HZ). The refresh rate describes how frequently your display refreshes the onscreen image. A 60 Hz screen refreshes images 60 times per second (i.e., every 16.67 ms). To find out the refresh rate, for Windows PCs, right click on the desktop screen, click the “Display settings” icon, then click the “Advanced display settings” icon. For macOS, click on the Mac icon on the top left, click “About This Mac”; on the pop-out menu, open the “Displays” tap.
 
 The returned xyY values are the CIE 1931 xyY color coordinates of the stimulus: xy for the coordinates in the color space that specify the color; Y (the third value) for the luminance value. The returned xyY matrix has five rows (for five measurements) and three columns (for xyY). To obtain the averaged measurement of xyY, run “xyY_mean = mean(xyY,1)”. 
+
+        >> xyY_mean = mean(xyY,1);
 
 <h2 id="5">Step 5: Calibration measurement</h2>
 
@@ -106,6 +111,8 @@ The above steps are for luminance and color measurement. We can also calibrate t
 Before calibration, make sure that no direct light shines on the monitor panel and that the monitor is turned on for at least 60 minutes to allow time for warm-up. Now, follow the steps below to begin the calibration process.
 
 5.1. Run the following command in MATLAB: "gammaMeasure_APL(deviceType)", where deviceType refers to the type of the Spyder device: 1 for Spyder5 and 2 for SpyderX. (For color channel calibration, use "gammaMeasure_APL(deviceType,[],[],[],[],[],[],2)".)
+
+        >> gammaMeasure_APL(deviceType,[],[],[],[],[],[],2);
 
 5.2. Now, in the command window, based on the prompts, you can optionally enter the relevant information of the display, including: brand, model, serial number, brightness, contrast, color temperature, computer brand, operating system, and graphics card (as highlighted by Section 2 in Figure 8). Providing this information is optional; you can press the Enter key to ignore these queries.
 
@@ -148,7 +155,11 @@ Before calibration, make sure that no direct light shines on the monitor panel a
 
 To linearize the display, PsyCalibrator incorporates the Mcalibrator2 toolkit (Ban & Yamamoto, 2013) to fit the data. Specifically, Mcalibrator2 implements several data fitting methods that do not assume the specific relation between video input and luminance output of the display (such as the gain-offset-gamma model or the gain-offset-gamma-offset model often assumed in CRT displays). These data-driven, model-free fitting methods can provide a better fit for various types of displays, from CRT to LCD and projectors, resulting in better linear correction. In our case, we mainly use the cubic spline interpolation method as it generally provides a superior fit.
 
-6.1. To fit the measurement data, enter and execute the following command in MATLAB: "Gamma = makeCorrectedGammaTab_APL('Gamma.mat');" (as highlighted by Section 1 in Figure 14). The fitting result is saved to a new file named Gamma_fitted.mat within the same directory, along with a figure visualizing the result (Figure 15). The generated file contains a structural variable named Gamma, in which Gamma.gammaTable (highlighted by Section 2 in Figure 14) is the color lookup table (CLUT, which translates the colors in an image to the colors in the hardware) for linearization, such that the midpoint RGB intensity level corresponds to the midpoint luminance level and so on.
+6.1. To fit the measurement data, enter and execute the following command in MATLAB:
+
+        >> Gamma = makeCorrectedGammaTab_APL('Gamma.mat');
+        
+The fitting result is saved to a new file named Gamma_fitted.mat within the same directory, along with a figure visualizing the result (Figure 15). The generated file contains a structural variable named Gamma, in which Gamma.gammaTable (highlighted by Section 2 in Figure 14) is the color lookup table (CLUT, which translates the colors in an image to the colors in the hardware) for linearization, such that the midpoint RGB intensity level corresponds to the midpoint luminance level and so on.
 
   ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f15.png)
  
@@ -159,9 +170,14 @@ To linearize the display, PsyCalibrator incorporates the Mcalibrator2 toolkit (B
 **Figure 15. Video input and luminance relation.**
 
 6.2. To verify the linearity of the display with the fitted CLUT, we need to measure the relation between RGB intensity and luminance with a photometer. As highlighted in Figure 16, to do so, execute the function gammaMeasure_APL as used before for luminance measurement (replace deviceType with the correct device type): 
->> gammaMeasure_APL(deviceType,[],[],[],Gamma.gammaTable)
+
+        >> gammaMeasure_APL(deviceType,[],[],[],Gamma.gammaTable);
+
 where deviceType refers to the type of test device: 1 for Spyder5 and 2 for SpyderX. The procedure is the same as in Steps 5.2 to 5.7 above. Finally, the results are saved to the file “Gamma_verification.mat” (Figure 17). Linearity is visualized with a figure showing the relation between RGB and luminance (from the variable xyY in Gamma_verification.mat; Figure 18). For color channel calibration, use:
->> gammaMeasure_APL(deviceType,[],[],[], Gamma.gammaTable,[],[],2):
+
+        >> gammaMeasure_APL(deviceType,[],[],[], Gamma.gammaTable,[],[],2);
+;
+        
 The rest is similar.
 
  ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f17.png)
@@ -181,9 +197,11 @@ The rest is similar.
 With the CLUT from the last step, we can use it for gamma correction (that is, to linearize the display). Afterward, we can also restore the display to its uncorrected state. This is implemented using a function called applyGammaCorrection_APL. This function has three input parameters. The first parameter (0 or 1) concerns the action of the function: 0 means no gamma correction (i.e., the default); 1 means applying the gamma correction. The second parameter is the CLUT to be applied (that is, Gamma.gammaTable from Step 6.1 for correction). The third parameter is the specific monitor that we would like to apply the correction to (see http://psychtoolbox.org/docs/Screen-Screens). 
 
 Therefore, for example, to perform gamma correction for the monitor numbered 0 based on Gamma.gammaTable, execute the following command in MATLAB: 
->> applyGammaCorrection_APL(1, Gamma.gammaTable,0);
+        >> applyGammaCorrection_APL(1, Gamma.gammaTable,0);
+
 To remove the correction (that is, to restore the display to its default status), execute:
->> applyGammaCorrection_APL(0, [], 0);
+
+        >> applyGammaCorrection_APL(0, [], 0);
 
 Reference
 Ban, H., & Yamamoto, H. (2013). [A non-device-specific approach to display characterization based on linear, non-linear, and hybrid search algorithms](https://doi.org/10.1167/13.6.20). Journal of vision, 13(6):20, 1–26.
