@@ -197,6 +197,7 @@ The rest is similar.
 With the CLUT from the last step, we can use it for gamma correction (that is, to linearize the display). Afterward, we can also restore the display to its uncorrected state. This is implemented using a function called applyGammaCorrection_APL. This function has three input parameters. The first parameter (0 or 1) concerns the action of the function: 0 means no gamma correction (i.e., the default); 1 means applying the gamma correction. The second parameter is the CLUT to be applied (that is, Gamma.gammaTable from Step 6.1 for correction). The third parameter is the specific monitor that we would like to apply the correction to (see http://psychtoolbox.org/docs/Screen-Screens). 
 
 Therefore, for example, to perform gamma correction for the monitor numbered 0 based on Gamma.gammaTable, execute the following command in MATLAB: 
+
         >> applyGammaCorrection_APL(1, Gamma.gammaTable,0);
 
 To remove the correction (that is, to restore the display to its default status), execute:
