@@ -1,6 +1,7 @@
 # PsyCalibrator: an open-source package for display gamma calibration and luminance and color measurement
 
-<center> Zhicheng Lin<sup>1</sup>, Qi Ma<sup>2</sup>, Yang Zhang<sup>2</sup> </center>
+<p align="center"> Zhicheng Lin<sup>1</sup>, Qi Ma<sup>2</sup>, Yang Zhang<sup>2</sup> </p>
+
 
 <sup>1</sup> School of Humanities and Social Science, The Chinese University of Hong Kong, Shenzhen, China 518172
 <sup>2</sup> Department of Psychology, Soochow University, Suzhou, Jiangsu, China 215000
