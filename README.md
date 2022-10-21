@@ -3,9 +3,9 @@
 <p align="center"> Zhicheng Lin<sup>1</sup>, Qi Ma<sup>2</sup>, Yang Zhang<sup>2</sup> </p>
 
 
-<sup>1</sup> School of Humanities and Social Science, The Chinese University of Hong Kong, Shenzhen, China 518172
+<sup>1</sup> _School of Humanities and Social Science, The Chinese University of Hong Kong, Shenzhen, China 518172_
 
-<sup>2</sup> Department of Psychology, Soochow University, Suzhou, Jiangsu, China 215000
+<sup>2</sup> _Department of Psychology, Soochow University, Suzhou, Jiangsu, China 215000_
 
 This is the step-by-step photometer tutorial portion of the article. The tutorial includes the following seven steps. For luminance/color measurement, follow Steps 1 to 4; for monitor correction (linearization), follow all the steps except Step 4.
 
@@ -19,21 +19,21 @@ This is the step-by-step photometer tutorial portion of the article. The tutoria
 
 <h2 id="1">Step 1: Obtain required instrument and software</h2>
 
-1. Instrument: 
+1. **Instrument:** 
 `Spyder5` or `SpyderX`
 
 **Note:** _`SpyderX` is the newer model. For both `Spyder5` and `SpyderX`, there are different versions available, but the only difference between the different versions (e.g., Express, Pro, and Elite) is the accompanying software package provided by Spyder. Since our calibration method does not use this provided software but only the hardware, any version of Spyder will work._
 
 2. **A computer with the following software**: 
- 1) **MATLAB** (common commercial software) or **GNU Octave** (a free alternative to MATLAB; for simplicity, below we will refer to MATLAB only) and Psychtoolbox.
- 2) **[Psychtoolbox](http://psychtoolbox.org)** (free software available at http://psychtoolbox.org)
- 3) **[PsyCalibrator](https://github.com/yangzhangpsy/PsyCalibrator)** (free at: https://github.com/yangzhangpsy/PsyCalibrator)
+   - **MATLAB** (common commercial software) or **GNU Octave** (a free alternative to MATLAB; for simplicity, below we will refer to MATLAB only) and Psychtoolbox.
+   - **[Psychtoolbox](http://psychtoolbox.org)** (free software available at http://psychtoolbox.org)
+   - **[PsyCalibrator](https://github.com/yangzhangpsy/PsyCalibrator)** (free at: https://github.com/yangzhangpsy/PsyCalibrator)
 
 **Note:** The software package includes both original files provided by the authors as well as files written by others (specifically, the file “spyderDriverWin” is extracted from [Argyll V2.1.2](http://www.argyllcms.com), available at http://www.argyllcms.com; the file “makeCLUT_APL” is modified from [Mcalibrator2](https://github.com/hiroshiban/Mcalibrator2), available at https://github.com/hiroshiban/Mcalibrator2)
 
 <h2 id="2">Step 2: Install Spyder driver</h2>
 
-If you are using Linux or Mac, there is no need to install the driver for the photometer. But if you are using Windows, you need to install the driver for the photometer. To check whether the driver is already installed, insert the device (e.g., `Spyder5`) into a USB port on the computer. Then open the "**Device Manager**" menu in Windows Settings (you can search "Device Manager" in the search bar at the bottom left of the desktop). If the driver has already been installed, you should see a USB icon showing “`Spyder5 (Argyll)`”, as highlighted in the red rectangle in Figure 1.
+If you are using Linux or Mac, there is no need to install the driver for the photometer. But if you are using Windows, you need to install the driver for the photometer. To check whether the driver is already installed, insert the device (e.g., `Spyder5`) into a USB port on the computer. Then open the "**Device Manager**" menu in Windows Settings (you can search "**Device Manager**" in the search bar at the bottom left of the desktop). If the driver has already been installed, you should see a USB icon showing “`Spyder5 (Argyll)`”, as highlighted in the red rectangle in Figure 1.
 
  ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f1.png)
  
@@ -60,6 +60,7 @@ On the other hand, if the driver has not been installed, then you may see an exc
 **Figure 4. Options for installing the driver.**
 
 2.3. Click "Browse" to find the driver software ("spyderDriverWin") in the "PsyCalibrator" folder, and then click "Next" (Figure 5 top). If you see “The best drivers for your device are already installed” (Figure 5 bottom), then instead of the “Browse” option above, you need to use the option “Let me pick from a list of available drivers on my computer” (then choose “Hard Disk…”, then “Browse” to find the same driver folder, then “OK”, and “Next”).
+
 ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f5.png)
 ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f6.png)
 
@@ -70,13 +71,13 @@ On the other hand, if the driver has not been installed, then you may see an exc
 
 Note: On 64-bit Windows 8 or 10, you might not be able to install the driver because of the “driver signature enforcement” feature, as detailed in this link: https://www.howtogeek.com/167723/how-to-disable-driver-signature-verification-on-64-bit-windows-8.1-so-that-you-can-install-unsigned-drivers/
 
-To resolve this issue, you can run the program provided in the package called “**enableTestModeWin10.cmd**” (right-click, choose “Run as administrator”) and then restart the computer. Follow Steps 2.1 to 2.4 above. After completing the installation of the Spyder driver as detailed above, you can then re-enable the “driver signature enforcement” feature by running the program called “**<font color=Blue>disableTestModeWin10.cmd</font>**” (right click, choose “Run as administrator”) and then restart the computer.
+To resolve this issue, you can run the program provided in the package called “**_enableTestModeWin10.cmd_**” (right-click, choose “Run as administrator”) and then restart the computer. Follow Steps 2.1 to 2.4 above. After completing the installation of the Spyder driver as detailed above, you can then re-enable the “driver signature enforcement” feature by running the program called “**_disableTestModeWin10.cmd_**” (right click, choose “Run as administrator”) and then restart the computer.
 
  ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f7.png)
  
 **Figure 6. Driver installation in progress.**
 
-2.5. After the installation is complete, you will see a display showing "Windows has successfully updated your drivers" (Figure 7). If you go to the "Device Manager" setting, you will see that the driver has been installed, as shown in Figure 1.
+2.5. After the installation is complete, you will see a display showing "Windows has successfully updated your drivers" (Figure 7). If you go to the "**Device Manager**" setting, you will see that the driver has been installed, as shown in Figure 1.
 
  ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f8.png)
  
@@ -154,7 +155,7 @@ Before calibration, make sure that no direct light shines on the monitor panel a
  
 **Figure 12. Uniform square images on the screen.**
 
-5.7. After the calibration is completed, a file that contains the measurement results will be generated in MATLAB within the current working path, named Gamma.mat (as highlighted in Figure 13).
+5.7. After the calibration is completed, a file that contains the measurement results will be generated in MATLAB within the current working path, named **Gamma.mat** (as highlighted in Figure 13).
 
   ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f14.png)
  
@@ -168,7 +169,7 @@ To linearize the display, PsyCalibrator incorporates the Mcalibrator2 toolkit (B
 
         >> Gamma = makeCorrectedGammaTab_APL('Gamma.mat');
         
-The fitting result is saved to a new file within the same directory, named Gamma_fitted.mat, along with a figure visualizing the result (Figure 15). The generated file contains a structural variable named Gamma, in which Gamma.gammaTable (highlighted by Section 2 in Figure 14) is the color lookup table (CLUT, which translates the colors in an image to the colors in the hardware). As detailed in Step 7, CLUT is then used for linearization, specifying the midpoint RGB intensity level that corresponds to the midpoint luminance level, and so on.
+The fitting result is saved to a new file within the same directory, named **Gamma_fitted.mat**, along with a figure visualizing the result (Figure 15). The generated file contains a structural variable named **Gamma**, in which **Gamma.gammaTable** (highlighted by Section 2 in Figure 14) is the color lookup table (CLUT, which translates the colors in an image to the colors in the hardware). As detailed in Step 7, CLUT is then used for linearization, specifying the midpoint RGB intensity level that corresponds to the midpoint luminance level, and so on.
 
   ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f15.png)
  
@@ -178,11 +179,11 @@ The fitting result is saved to a new file within the same directory, named Gamma
  
 **Figure 15. Video input and luminance relation.**
 
-6.2. To verify the linearity of the display with the fitted CLUT, we need to measure the relation between RGB intensity and luminance with a photometer. As highlighted in Figure 16, to do so, execute the function gammaMeasure_APL as used before for luminance measurement (replace deviceType with the correct device type): 
+6.2. To verify the linearity of the display with the fitted CLUT, we need to measure the relation between RGB intensity and luminance with a photometer. As highlighted in Figure 16, to do so, execute the function **gammaMeasure_APL** as used before for luminance measurement (replace deviceType with the correct device type): 
 
         >> gammaMeasure_APL(deviceType,[],[],[],Gamma.gammaTable);
 
-where deviceType refers to the type of test device: 1 for `Spyder5` and 2 for `SpyderX`. The procedure is the same as in Steps 5.2 to 5.7 above. Finally, the results are saved to the file “Gamma_verification.mat” (Figure 17). Linearity is visualized with a figure showing the relation between RGB and luminance (from the variable xyY in Gamma_verification.mat; Figure 18). For color channel calibration, use:
+where deviceType refers to the type of test device: 1 for `Spyder5` and 2 for `SpyderX`. The procedure is the same as in Steps 5.2 to 5.7 above. Finally, the results are saved to the file “**Gamma_verification.mat**” (Figure 17). Linearity is visualized with a figure showing the relation between RGB and luminance (from the variable xyY in **Gamma_verification.mat**; Figure 18). For color channel calibration, use:
 
         >> gammaMeasure_APL(deviceType,[],[],[], Gamma.gammaTable,[],[],2);
         
