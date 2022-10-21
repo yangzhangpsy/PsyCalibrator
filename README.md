@@ -17,20 +17,22 @@ This is the step-by-step photometer tutorial portion of the article. The tutoria
 * [Step 5: Calibration measurement](#5)
 * [Step 6: Data fitting](#6)
 * [Step 7: Apply or remove gamma correction](#7)
+* [Reference](#8)
 
 <h2 id="1">Step 1: Obtain required instrument and software</h2>
 
 1. **Instrument:** 
 `Spyder5` or `SpyderX`
 
-**Note:** _`SpyderX` is the newer model. For both `Spyder5` and `SpyderX`, there are different versions available, but the only difference between the different versions (e.g., Express, Pro, and Elite) is the accompanying software package provided by Spyder. Since our calibration method does not use this provided software but only the hardware, any version of Spyder will work._
+   **Note:** _`SpyderX` is the newer model. For both `Spyder5` and `SpyderX`, there are different versions available, but the only difference between the different versions (e.g., Express, Pro, and Elite) is the accompanying software package provided by Spyder. Since our calibration method does not use this provided software but only the hardware, any version of Spyder will work._
+
 
 2. **A computer with the following software**: 
-   - **MATLAB** (common commercial software) or **GNU Octave** (a free alternative to MATLAB; for simplicity, below we will refer to MATLAB only) and Psychtoolbox.
-   - **[Psychtoolbox](http://psychtoolbox.org)** (free software available at http://psychtoolbox.org)
-   - **[PsyCalibrator](https://github.com/yangzhangpsy/PsyCalibrator)** (free at: https://github.com/yangzhangpsy/PsyCalibrator)
+     - **MATLAB** (common commercial software) or **GNU Octave** (a free alternative to MATLAB; for simplicity, below we will refer to MATLAB only) and Psychtoolbox.
+     - **[Psychtoolbox](http://psychtoolbox.org)** (free software available at http://psychtoolbox.org)
+     - **[PsyCalibrator](https://github.com/yangzhangpsy/PsyCalibrator)** (free at: https://github.com/yangzhangpsy/PsyCalibrator)
 
-**Note:** The software package includes both original files provided by the authors as well as files written by others (specifically, the file “spyderDriverWin” is extracted from [Argyll V2.1.2](http://www.argyllcms.com), available at http://www.argyllcms.com; the file “makeCLUT_APL” is modified from [Mcalibrator2](https://github.com/hiroshiban/Mcalibrator2), available at https://github.com/hiroshiban/Mcalibrator2)
+**Note:** The software package includes both original files provided by the authors as well as files written by others (specifically, the file “**_spyderDriverWin_**” is extracted from [Argyll V2.1.2](http://www.argyllcms.com), available at http://www.argyllcms.com; the file “_**makeCLUT_APL**_” is modified from [Mcalibrator2](https://github.com/hiroshiban/Mcalibrator2), available at https://github.com/hiroshiban/Mcalibrator2)
 
 <h2 id="2">Step 2: Install Spyder driver</h2>
 
@@ -214,5 +216,6 @@ To remove the correction (that is, to restore the display to its default status)
 
         >> applyGammaCorrection_APL(0, [], 0);
 
-Reference
+<h2 id="8">Reference</h2>
+
 Ban, H., & Yamamoto, H. (2013). [A non-device-specific approach to display characterization based on linear, non-linear, and hybrid search algorithms](https://doi.org/10.1167/13.6.20). Journal of vision, 13(6):20, 1–26.
