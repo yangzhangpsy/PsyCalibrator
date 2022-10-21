@@ -29,7 +29,7 @@ This is the step-by-step photometer tutorial portion of the article. The tutoria
  2) **[Psychtoolbox](http://psychtoolbox.org)** (free software available at http://psychtoolbox.org)
  3) **[PsyCalibrator](https://github.com/yangzhangpsy/PsyCalibrator)** (free at: https://github.com/yangzhangpsy/PsyCalibrator)
 
-**Note:** The software package includes both original files provided by the authors as well as files written by others (specifically, the file “spyderDriverWin” is extracted from Argyll V2.1.2, available at http://www.argyllcms.com; the file “makeCLUT_APL” is modified from Mcalibrator2, available at https://github.com/hiroshiban/Mcalibrator2)
+**Note:** The software package includes both original files provided by the authors as well as files written by others (specifically, the file “spyderDriverWin” is extracted from [Argyll V2.1.2](http://www.argyllcms.com), available at http://www.argyllcms.com; the file “makeCLUT_APL” is modified from [Mcalibrator2](https://github.com/hiroshiban/Mcalibrator2), available at https://github.com/hiroshiban/Mcalibrator2)
 
 <h2 id="2">Step 2: Install Spyder driver</h2>
 
@@ -70,7 +70,7 @@ On the other hand, if the driver has not been installed, then you may see an exc
 
 Note: On 64-bit Windows 8 or 10, you might not be able to install the driver because of the “driver signature enforcement” feature, as detailed in this link: https://www.howtogeek.com/167723/how-to-disable-driver-signature-verification-on-64-bit-windows-8.1-so-that-you-can-install-unsigned-drivers/
 
-To resolve this issue, you can run the program provided in the package called “enableTestModeWin10.cmd” (right-click, choose “Run as administrator”) and then restart the computer. Follow Steps 2.1 to 2.4 above. After completing the installation of the Spyder driver as detailed above, you can then re-enable the “driver signature enforcement” feature by running the program called “disableTestModeWin10.cmd” (right click, choose “Run as administrator”) and then restart the computer.
+To resolve this issue, you can run the program provided in the package called “**enableTestModeWin10.cmd**” (right-click, choose “Run as administrator”) and then restart the computer. Follow Steps 2.1 to 2.4 above. After completing the installation of the Spyder driver as detailed above, you can then re-enable the “driver signature enforcement” feature by running the program called “**<font color=Blue>disableTestModeWin10.cmd</font>**” (right click, choose “Run as administrator”) and then restart the computer.
 
  ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f7.png)
  
