@@ -166,7 +166,7 @@ Before calibration, make sure that no direct light shines on the monitor panel a
 
 <h2 id="6">Step 6: Data fitting</h2>
 
-To linearize the display, PsyCalibrator incorporates the Mcalibrator2 toolkit (Ban & Yamamoto, 2013) to fit the data. Specifically, Mcalibrator2 implements several data fitting methods that do not assume the specific relation between video input and luminance output of the display (such as the gain-offset-gamma model or the gain-offset-gamma-offset model often assumed in CRT displays). These data-driven, model-free fitting methods can provide a better fit for various types of displays, from CRT to LCD and projectors, resulting in better linear correction. In our case, we mainly use the cubic spline interpolation method as it generally provides a superior fit.
+To linearize the display, PsyCalibrator incorporates the Mcalibrator2 toolkit an (Ban & Yamamoto, 2013) to fit the data. Specifically, Mcalibrator2 implements several data fitting methods that do not assume the specific relation between video input and luminance output of the display (such as the gain-offset-gamma model or the gain-offset-gamma-offset model often assumed in CRT displays). These data-driven, model-free fitting methods can provide a better fit for various types of displays, from CRT to LCD and projectors, resulting in better linear correction. In our case, we mainly use the cubic spline interpolation method as it generally provides a superior fit.
 
 6.1. To fit the measurement data, enter and execute the following command in MATLAB:
 
