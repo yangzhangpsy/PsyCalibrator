@@ -6,7 +6,7 @@
 <sup>1</sup> _School of Humanities and Social Science, The Chinese University of Hong Kong, Shenzhen, China 518172_
 
 <sup>2</sup> _Department of Psychology, Soochow University, Suzhou, Jiangsu, China 215000_
-
+$\color{red}{不行啊}$
 This is the step-by-step photometer tutorial portion of the article. The tutorial includes the following seven steps. For luminance/color measurement, follow Steps 1 to 4; for monitor correction (linearization), follow all the steps except Step 4.
 
 * [Step 1: Obtain required instrument and software](#1)
