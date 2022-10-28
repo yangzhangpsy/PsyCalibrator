@@ -230,8 +230,6 @@ end
 function out = bulkTransfer(cmd, outSize)
 % cmd :[uint8]
 % outSize : [double]
-% get hardware version number
-% is waitting for Psychtoolbox’s support
 
 PsychHID('USBBulkTransfer', usbHandle, 1, numel(cmd), cmd);
 %[countOrRecData] = PsychHID('USBBulkTransfer', usbHandle, endPoint, length [, outData][, timeOutMSecs=10000])
