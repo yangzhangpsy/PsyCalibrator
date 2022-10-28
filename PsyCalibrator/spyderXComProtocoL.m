@@ -234,10 +234,12 @@ function out = bulkTransfer(cmd, outSize)
 % is waitting for Psychtoolbox’s support
 PsychHID('USBBulkTransfer', usbHandle, 1, cmd, numel(cmd), 5000);  
 % libusb_bulk_transfer(device, 1, cmd, numel(cmd), 5000);
+%[countOrRecData] = PsychHID('USBBulkTransfer', usbHandle, endPoint, length [, outData][, timeOutMSecs=10000])
 
 
 % get hardware version number
-PsychHID('USBBulkTransfer', usbHandle, 0x81, cmd, outSize, 5000);  
+out = PsychHID('USBBulkTransfer', usbHandle, 0x81, cmd, outSize, 5000);
 % out = libusb_bulk_transfer(device, 0x81, outSize, 5000);
 
 end
+
