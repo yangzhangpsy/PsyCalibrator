@@ -39,26 +39,26 @@ switch lower(command)
         % 1:2: nonce = 0xffff & rand32(0)
         % 3:4: send size
 
-        out = bulkTransfer(uint8([0xd9 0x42 0x33 0x00 0x00]), 28);
+        out = bulkTransfer(usbHandle, uint8([0xd9 0x42 0x33 0x00 0x00]), 28);
         spyderX.HWvn = decodeHWverNo(out);
 
         % get serial number
-        out = bulkTransfer(uint8([0xc2 0x5c 0x37 0x00 0x00]), 42);
+        out = bulkTransfer(uint8(usbHandle, [0xc2 0x5c 0x37 0x00 0x00]), 42);
         spyderX.serNo = decodeSerNo(out);
 
         % get the factory Calibration data not the black calibration Data
-        out = bulkTransfer(uint8([0xcb 0x05 0x73 0x00 0x01 0x00]), 47);
+        out = bulkTransfer(usbHandle, uint8([0xcb 0x05 0x73 0x00 0x01 0x00]), 47);
         spyderX.calibration = decodeCalibration(out);
         sypderX.isOpen = true; %#ok<*STRNU>
 
         % get Amb measure
         % for amb measure the integration time and gain setting are fixed to 0x65 and 0x10, respectively
-        out = bulkTransfer(uint8([0xd4 0xa1 0xc5 0x00 0x02 0x65 0x10]), 11);
+        out = bulkTransfer(usbHandle, uint8([0xd4 0xa1 0xc5 0x00 0x02 0x65 0x10]), 11);
         spyderX.amb = decodeAmbCalibration(out);
 
         % measure setting up
         % the send[0]--- v1 0x03
-        out = bulkTransfer(uint8([0xc3 0x29 0x27 0x00 0x01 spyderX.calibration.v1]), 15);
+        out = bulkTransfer(usbHandle, uint8([0xc3 0x29 0x27 0x00 0x01 spyderX.calibration.v1]), 15);
         spyderX.settUp = decodeSettUp(out);
 
     case 'calibration'
@@ -75,7 +75,7 @@ switch lower(command)
 
         send = uint8([hex2dec(v2(1:2)),hex2dec(v2(1:2)),s1,s2]);
         % []
-        out = bulkTransfer(uint8([0xd2 0x3f 0xb9 0x00 0x07 send]), 13);
+        out = bulkTransfer(usbHandle, uint8([0xd2 0x3f 0xb9 0x00 0x07 send]), 13);
         raw = decodeMeasure(out);
 
         spyderX.bcal = raw(1:3) - spyderX.settUp.s3(1:3);
@@ -98,7 +98,7 @@ switch lower(command)
 
         send = uint8([hex2dec(v2(1:2)),hex2dec(v2(1:2)),s1,s2]);
         % []
-        out = bulkTransfer(uint8([0xd2 0x3f 0xb9 0x00 0x07 send]), 13);
+        out = bulkTransfer(usbHandle, uint8([0xd2 0x3f 0xb9 0x00 0x07 send]), 13);
         raw = decodeMeasure(out);
 
         raw(1:3) = raw(1:3) - spyderX.settUp.s3(1:3) - spyderX.bcal(1:3);
@@ -227,7 +227,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%
 % USB Bulk Transfer
 %%%%%%%%%%%%%%%%%%%%%%%%
-function out = bulkTransfer(cmd, outSize)
+function out = bulkTransfer(usbHandle, cmd, outSize)
 % cmd :[uint8]
 % outSize : [double]
 
