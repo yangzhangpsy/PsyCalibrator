@@ -43,7 +43,7 @@ switch lower(command)
         spyderX.HWvn = decodeHWverNo(out);
 
         % get serial number
-        out = bulkTransfer(uint8(usbHandle, [0xc2 0x5c 0x37 0x00 0x00]), 42);
+        out = bulkTransfer(usbHandle, uint8([0xc2 0x5c 0x37 0x00 0x00]), 42);
         spyderX.serNo = decodeSerNo(out);
 
         % get the factory Calibration data not the black calibration Data
@@ -187,7 +187,7 @@ k = 0;
 
 for iRow = 1:3
     for iCol = 1:3
-        mat(iRow, iCol) = read_IEEE754(out(k*4+5:k*4+5+4));
+        mat(iRow, iCol) = read_IEEE754(out(k*4+5:k*4+5+4-1));
         k = k+1;
     end
 
@@ -213,7 +213,7 @@ end
 % read n ORD be
 %%%%%%%%%%%%%%%%%%%%%%%%
 function out = read_IEEE754(input)
-% transform uint8 into IEEE754 flot
+% transform uint8 into IEEE754 flat
 input = input(end:-1:1);
 
 out = sprintf('%s',transpose(dec2bin(input,8)));
@@ -221,7 +221,7 @@ out = sprintf('%s',transpose(dec2bin(input,8)));
 fraction = out(10:32);
 exponent = out(2:9);
 
-out = -1^out(1) * (1 + bin2dec(fraction)/2^23) * 2^(bin2dec(exponent)-127);
+out = (-1)^out(1) * (1 + bin2dec(fraction)/2^23) * 2^(bin2dec(exponent)-127);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -230,13 +230,14 @@ end
 function out = bulkTransfer(usbHandle, cmd, outSize)
 % cmd :[uint8]
 % outSize : [double]
-
+% 0x01 = 1
 PsychHID('USBBulkTransfer', usbHandle, 1, numel(cmd), cmd);
 %[countOrRecData] = PsychHID('USBBulkTransfer', usbHandle, endPoint, length [, outData][, timeOutMSecs=10000])
 
 
 % get hardware version number
-out = PsychHID('USBBulkTransfer', usbHandle, 0x81, outSize);
+% 0x81 = 129
+out = PsychHID('USBBulkTransfer', usbHandle, 129, outSize);
 %[countOrRecData] = PsychHID('USBBulkTransfer', usbHandle, endPoint, length [, outData][, timeOutMSecs=10000])
 end
 
