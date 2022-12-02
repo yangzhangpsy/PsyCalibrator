@@ -60,6 +60,7 @@ switch lower(command)
         % the send[0]--- v1 0x03
         out = bulkTransfer(usbHandle, uint8([0xc3 0x29 0x27 0x00 0x01 spyderX.calibration.v1]), 15);
         spyderX.settUp = decodeSettUp(out);
+        spyderX.isOpen = true;
 
     case 'calibration'
         % do zero point calibration
@@ -79,6 +80,7 @@ switch lower(command)
         raw = decodeMeasure(out);
 
         spyderX.bcal = raw(1:3) - spyderX.settUp.s3(1:3);
+        spyderX.isBlackCal = true;
 
 
     case 'measure'
@@ -103,7 +105,7 @@ switch lower(command)
 
         raw(1:3) = raw(1:3) - spyderX.settUp.s3(1:3) - spyderX.bcal(1:3);
 
-        XYZ = transpose(raw(1:3))*spyderX.calibration.matrix;
+        XYZ = raw(1:3)*spyderX.calibration.matrix;
 
     case 'close'
         PsychHID('CloseUSBDevice',usbHandle);
