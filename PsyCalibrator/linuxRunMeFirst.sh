@@ -4,7 +4,7 @@
 cd "$(dirname "$0")"
 
 # for os systems include Gnome Color Manager. which comes with a udev rule for color instruments
-if [ -f "/usr/lib/udev/rules.d/69-cd-sensors.rules"] | [ -f "/usr/lib/udev/rules.d/69-cd-sensors.rules"]; then
+if [ -f "/etc/udev/rules.d/69-cd-sensors.rules"] | [ -f "/usr/lib/udev/rules.d/69-cd-sensors.rules"]; then
     sudo usermod -a -G colord $USER
 else
     if [ ! -d "/etc/udev/rules.d" ]; then
