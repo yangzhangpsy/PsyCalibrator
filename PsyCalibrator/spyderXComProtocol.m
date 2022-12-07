@@ -50,7 +50,7 @@ switch lower(command)
         % get the factory Calibration data not the black calibration Data
         out = bulkTransfer(usbHandle, uint8([0xcb 0x05 0x73 0x00 0x01 0x00]), 47);
         spyderX.calibration = decodeCalibration(out);
-        sypderX.isOpen = true; %#ok<*STRNU>
+        spyderX.isOpen = true; %#ok<*STRNU>
 
         % get Amb measure
         % for amb measure the integration time and gain setting are fixed to 0x65 and 0x10, respectively
@@ -61,7 +61,6 @@ switch lower(command)
         % the send[0]--- v1 0x03
         out = bulkTransfer(usbHandle, uint8([0xc3 0x29 0x27 0x00 0x01 spyderX.calibration.v1]), 15);
         spyderX.settUp = decodeSettUp(out);
-        spyderX.isOpen = true;
 
     case 'calibration'
         % do zero point calibration
