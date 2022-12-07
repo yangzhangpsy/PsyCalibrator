@@ -29,6 +29,7 @@ switch lower(command)
 
     case 'initial'
         usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), hex2dec('0A00'));
+        PsychHID('USBClaimInterface', usbHandle, 0); % to explicitly claim the inferface
         PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0,   1, 0);    % clear feature Request
         PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0, 129, 0);  % clear feature Request
         PsychHID('USBControlTransfer', usbHandle, double(0x41), 2, 2,   0, 0);    % URB_CONTROL out
