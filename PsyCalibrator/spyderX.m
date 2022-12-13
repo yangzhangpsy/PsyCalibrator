@@ -9,14 +9,14 @@ persistent spyderData usbHandle
 %  argout:
 %  XYZ: 1*3 double: the measured XYZ in 1931 CIEXYZ color coordinate: works only for measure command
 %
-%  Demo:
-%  spyderXcomProtocol('initial');     % initialize SpyderX
-%  spyderXcomProtocol('calibration'); % after capping up SpyderX, do zero point calibration.
+%  Useage:
+%  spyderX('initial');     % initialize SpyderX
+%  spyderX('calibration'); % after capping up SpyderX, do zero point calibration.
 %
 %   %your codes maybe a for loop
-%  XYZ = spyderXcomProtocol('measure'); % get a measure
+%  XYZ = spyderX('measure'); % get a measure
 %
-%  spyderXcomProtocol('close'); % close and clean all info
+%  spyderX('close'); % close and clean all info
 %
 %  Written by Yang Zhang, Soochow University
 %  zhangyang873@gmail.com
