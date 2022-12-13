@@ -2,7 +2,7 @@ function [XYZ] = spyderX(command)
 persistent spyderData usbHandle
 % The function is aimed to use PsychHID to control spyderX
 %
-% function used to communication with spyderX
+% function used to communicate with spyderX
 %  Usage:
 %  argin: command string: 'initial', 'calibration', 'measure', or 'close'
 %
@@ -26,87 +26,87 @@ persistent spyderData usbHandle
 XYZ = [];
 
 switch lower(command)
-
+    
     case 'initial'
         usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), hex2dec('0A00'));
         PsychHID('USBClaimInterface', usbHandle, 0); % to explicitly claim the inferface
         PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0,   1, 0);    % clear feature Request
         PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0, 129, 0);  % clear feature Request
         PsychHID('USBControlTransfer', usbHandle, double(0x41), 2, 2,   0, 0);    % URB_CONTROL out
-
+        
         % get hardware version number
         % bulk Transfer format:
         %   0: cmd
         % 1:2: nonce = 0xffff & rand32(0)
         % 3:4: send size
-
+        
         out = bulkTransfer(usbHandle, uint8([0xd9 0x42 0x33 0x00 0x00]), 28);
         spyderData.HWvn = decodeHWverNo(out);
-
+        
         % get serial number
         out = bulkTransfer(usbHandle, uint8([0xc2 0x5c 0x37 0x00 0x00]), 42);
         spyderData.serNo = decodeSerNo(out);
-
+        
         % get the factory Calibration data not the black calibration Data
         out = bulkTransfer(usbHandle, uint8([0xcb 0x05 0x73 0x00 0x01 0x00]), 47);
         spyderData.calibration = decodeCalibration(out);
         spyderData.isOpen = true; %#ok<*STRNU>
-
+        
         % get Amb measure
         % for amb measure the integration time and gain setting are fixed to 0x65 and 0x10, respectively
         out = bulkTransfer(usbHandle, uint8([0xd4 0xa1 0xc5 0x00 0x02 0x65 0x10]), 11);
         spyderData.amb = decodeAmbCalibration(out);
-
+        
         % measure setting up
         % the send[0]--- v1 0x03
         out = bulkTransfer(usbHandle, uint8([0xc3 0x29 0x27 0x00 0x01 spyderData.calibration.v1]), 15);
         spyderData.settUp = decodeSettUp(out);
-
+        
     case 'calibration'
         % do zero point calibration
         if ~isfield(spyderData, 'isOpen') || ~spyderData.isOpen
             error('SpyderX did not initialized, please run spyderData(''initial''); first!');
         end
-
-
+        
+        
         PsychHID('USBControlTransfer', usbHandle, double(0x41),2, 2, 0, 0);    % URB_CONTROL out spyder reset
         v2 = dec2hex(spyderData.calibration.v2, 4);
         s1 = spyderData.settUp.s1;
         s2 = spyderData.settUp.s2;
-
+        
         send = uint8([hex2dec(v2(1:2)),hex2dec(v2(1:2)),s1,s2]);
         % []
         out = bulkTransfer(usbHandle, uint8([0xd2 0x3f 0xb9 0x00 0x07 send]), 13);
         raw = decodeMeasure(out);
-
+        
         spyderData.bcal = raw(1:3) - spyderData.settUp.s3(1:3);
         spyderData.isBlackCal = true;
-
-
+        
+        
     case 'measure'
         if ~isfield(spyderData, 'isOpen') || ~spyderData.isOpen
             error('SpyderX did not initialized, please run SpyderX(''initial''); first!');
         end
-
+        
         if ~isfield(spyderData, 'isBlackCal') || ~spyderData.isBlackCal
             error('SpyderX did not carry out black calibration, please cap on spyderX and run SpyderX(''calibration''); first!');
         end
-
+        
         PsychHID('USBControlTransfer', usbHandle, double(0x41),2, 2, 0, 0);    % URB_CONTROL out spyder reset
         % [0xd2 0x3f 0xb9 0x00 0x07 0x02 0xca 0x03 0xe1 0xa1 0xa1 0x00 ]
         v2 = dec2hex(spyderData.calibration.v2, 4);
         s1 = spyderData.settUp.s1;
         s2 = spyderData.settUp.s2;
-
+        
         send = uint8([hex2dec(v2(1:2)),hex2dec(v2(1:2)),s1,s2]);
         % []
         out = bulkTransfer(usbHandle, uint8([0xd2 0x3f 0xb9 0x00 0x07 send]), 13);
         raw = decodeMeasure(out);
-
+        
         raw(1:3) = raw(1:3) - spyderData.settUp.s3(1:3) - spyderData.bcal(1:3);
-
+        
         XYZ = raw(1:3)*spyderData.calibration.matrix;
-
+        
     case 'close'
         PsychHID('CloseUSBDevice',usbHandle);
         %    	spyderData.isOpen = false;
@@ -119,7 +119,7 @@ end
 end % function
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%   sub functions
+%   sub-functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 function serNo = decodeSerNo(out)
@@ -192,7 +192,7 @@ for iRow = 1:3
         mat(iRow, iCol) = read_IEEE754(out(k*4+5:k*4+5+4-1));
         k = k+1;
     end
-
+    
 end
 
 calibration.matrix = mat;
