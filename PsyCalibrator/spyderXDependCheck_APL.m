@@ -14,7 +14,7 @@ if isempty(spyderXDependPsychHID_APL)
     % Check PsychHID version
     v = PsychHID('Version');
 
-    if v.build < 638515007
+    if v.build < 638479169 % mac 638479169 win 638515007
         status = 1;
     end
 
