@@ -212,7 +212,20 @@ try
         switch deviceType
             case {1,2}
                 % do measure or calibration(if necessary) once
-                dependStatus = spyderCalibration_APL(0, deviceType);
+                spyderCalibration_APL(0);
+
+                if deviceType == 2
+                    if spyderXDependCheck_APL == 2
+                        % the driver is not datacolor SpyderX
+                        cprintf([0 0 1],['=========================================== Warning ============================================\n'...
+                                        'now PsyCalibrator can use PsychHID to control spyderX, which is better/faster than spotread, \n'...
+                                        'However, you are still using the customized argyll driver [showed SpyderX (argyll) in the Device Manager list]\n'...
+                                        'Please switch the driver back to "Datacolor SpyderX" to enable this new feature and remove this warning info\n '...
+                                        '[right-click and select Upate Driver, then select Search automatically for updated driver software]\n'...
+                                        '*================================================================================================\n']);
+                    end
+                end
+
             case 3
                 if IsWin
                     [~,myCorrectionMatrix] = ColorCal2_SlowWin_APL('initialize');

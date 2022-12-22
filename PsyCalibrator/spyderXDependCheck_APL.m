@@ -1,27 +1,41 @@
 function status = spyderXDependCheck_APL()
 %    Check the dependences for spyderX via PsychHID equiped with bulk transfer
+%    argout:
+%    status  a double 0,1,2 for spyderX and have dependent environment, unsupported version of PsychHID, and wring driver for spyderX respectively
+%
 %    written by Yang Zhang
 %    2022-12-22
 
-    status = 0;
+    persistent spyderXDependPsychHID_APL
 
-    % Check PsychHID version
-    v = PsychHID('Version');
+    if isempty(spyderXDependPsychHID_APL)
 
-    if v.build < 638515007
-        status = 1;
-    end
+        status = 0;
 
-    % Check spyderX driver
+        % Check PsychHID version
+        v = PsychHID('Version');
 
-    if ~status
-        try
-            % usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), hex2dec('0A00'));
-            % PsychHID('CloseUSBDevice',usbHandle);
-            spyderX('initial'); % to save the time
-        catch
-            status = 2;
+        if v.build < 638515007
+            status = 1;
         end
+
+        % Check spyderX driver
+
+        if ~status
+            try
+                spyderX('initial'); % to save the time
+            catch
+                % wrong driver or not spyderX
+                status = 2;
+            end
+        end
+
+         spyderXDependPsychHID_APL = status;
+    else
+        status = spyderXDependPsychHID_APL;
     end
+
+
+
 
 

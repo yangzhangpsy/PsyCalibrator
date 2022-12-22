@@ -6,7 +6,7 @@ function xyY = spyderRead_APL(refreshRate, nMeasures)
 % 2019/5/22 13:00:37
 
 try
-    
+
     if ~exist('refreshRate','var')|| isempty(refreshRate)
         refreshRate = [];
     end
@@ -33,17 +33,21 @@ try
     end
 
     for iM = 1:nMeasures
-
         nMaxMeasures = 1;
-        XYZ          = [];
+        XYZ = [];
 
         while isempty(XYZ)&& nMaxMeasures < 2 % try two times in maxmium
-            % ---- do it again -----/
-            [noused,out] = system(commandStr);
+            if spyderXDependCheck_APL
+                % ---- do it again -----/
+                [noused,out] = system(commandStr);
 
-            iStart       = strfind(out, 'Result is XYZ:');
-            XYZ          = sscanf(out(iStart:end), 'Result is XYZ: %f %f %f');
-            %-----------------------\
+                iStart       = strfind(out, 'Result is XYZ:');
+                XYZ          = sscanf(out(iStart:end), 'Result is XYZ: %f %f %f');
+                %-----------------------\
+            else
+                XYZ = spyderX('measure')';
+            end
+
             nMaxMeasures = nMaxMeasures + 1;
         end
         xyY(iM,:) = XYZToxyY(XYZ)';
