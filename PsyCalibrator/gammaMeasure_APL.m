@@ -294,11 +294,8 @@ try
                 abortExp(w,gammaTableBack,EscapeKey);
                 
                 switch deviceType
-                    case 1
-                        % spyder 5
-                        cxyY = spyderRead_APL(refreshRate, 1);
-                    case 2
-                        % spyderX
+                    case {1,2}
+                        % spyder 5 or X
                         cxyY = spyderRead_APL(refreshRate, 1);
                     case 3
                         % colorCal MKll
