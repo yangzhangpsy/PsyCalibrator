@@ -1,7 +1,7 @@
 function status = spyderXDependCheck_APL()
 %    Check the dependences for spyderX via PsychHID equiped with bulk transfer
 %    argout:
-%    status  a double 0,1,2 for spyderX and have dependent environment, unsupported version of PsychHID, and wring driver for spyderX respectively
+%    status  a double scale: 0,1,2 for spyderX with PsychHID, unsupported version of PsychHID, and wrong driver for spyderX, respectively
 %
 %    written by Yang Zhang
 %    2022-12-22
@@ -19,7 +19,6 @@ if isempty(spyderXDependPsychHID_APL)
     end
 
     % Check spyderX driver
-
     if ~status
         try
             spyderX('initial'); % to save the time
