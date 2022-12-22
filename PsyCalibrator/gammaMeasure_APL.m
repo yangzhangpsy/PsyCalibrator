@@ -75,8 +75,6 @@ if isCustomizedClut
     outputFilename = fullfile(path,[filenameonly,'_verification',suffix]);
 end
 
-dependStatus = 0;
-
 % Screen information
 if ~skipInputScreenInfo
     Gamma.DisDes           = input('Enter monitor''s brand name (you can skip these questions by pressing the enter key): ','s');
@@ -301,16 +299,7 @@ try
                         cxyY = spyderRead_APL(refreshRate, 1);
                     case 2
                         % spyderX
-                        if dependStatus
-                            % wrong driver type or incorrect version of PsychHID
-                            cxyY = spyderRead_APL(refreshRate, 1);
-                        else
-                            % spyderX via PsychHID
-                            cXYZ = spyderX('measure')';
-                            cxyY = XYZToxyY(cXYZ)';
-                        end
-
-
+                        cxyY = spyderRead_APL(refreshRate, 1);
                     case 3
                         % colorCal MKll
                         if IsWin
