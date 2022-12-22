@@ -1,4 +1,4 @@
-function spyderCalibration_APL(printPromptInfo, deviceType)
+function dependStatus = spyderCalibration_APL(printPromptInfo, deviceType)
 %    Written by Yang Zhang
 %    2021-01-14 20:12:55
 if ~exist('printPromptInfo','var')||isempty(printPromptInfo)
@@ -10,13 +10,14 @@ if printPromptInfo
     pause;
 end
 
-cFolder    = fileparts(mfilename('fullpath'));
+dependStatus = 0;
+cFolder      = fileparts(mfilename('fullpath'));
 
 if deviceType == 2
     % check/init spyderX
-    status = spyderXDependCheck_APL;
+    dependStatus = spyderXDependCheck_APL;
 
-    switch status
+    switch dependStatus
         case 1
             %  PsychHID is not the appropriate version, use spotread instead
             deviceType = 1;

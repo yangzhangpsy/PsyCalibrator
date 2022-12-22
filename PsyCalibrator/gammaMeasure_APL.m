@@ -75,7 +75,7 @@ if isCustomizedClut
     outputFilename = fullfile(path,[filenameonly,'_verification',suffix]);
 end
 
-
+dependStatus = 0;
 
 % Screen information
 if ~skipInputScreenInfo
@@ -212,7 +212,7 @@ try
         switch deviceType
             case {1,2}
                 % do measure or calibration(if necessary) once
-                spyderCalibration_APL(0);
+                dependStatus = spyderCalibration_APL(0, deviceType);
             case 3
                 if IsWin
                     [~,myCorrectionMatrix] = ColorCal2_SlowWin_APL('initialize');
@@ -283,9 +283,21 @@ try
                 abortExp(w,gammaTableBack,EscapeKey);
                 
                 switch deviceType
-                    case {1,2}
-                        % spyder 5 and X
+                    case 1
+                        % spyder 5
                         cxyY = spyderRead_APL(refreshRate, 1);
+                    case 2
+                        % spyderX
+                        if dependStatus
+                            % wrong driver type or incorrect version of PsychHID
+                            cxyY = spyderRead_APL(refreshRate, 1);
+                        else
+                            % spyderX via PsychHID
+                            cXYZ = spyderX('measure')';
+                            cxyY = XYZToxyY(cXYZ)';
+                        end
+
+
                     case 3
                         % colorCal MKll
                         if IsWin
