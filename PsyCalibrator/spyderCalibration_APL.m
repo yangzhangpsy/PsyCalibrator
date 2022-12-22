@@ -17,18 +17,16 @@ if deviceType == 2
     status = spyderXDependCheck_APL;
 
     switch status
-        case 0
-            % donothing
         case 1
             %  PsychHID is not the appropriate version, use spotread instead
             deviceType = 1;
         case 2
+            % the driver is not datacolor SpyderX
             cprintf([0 0 1],['     **************************** Warning****************************                \n'...
                     'now PsyCalibrator can use PsychHID to control spyderX, which is better/faster than spotread, \n'...
                     'However, you are still using the customized argyll driver [showed SpyderX (argyll) in the Device Manager list]\n'...
-                    'Please switch the driver back to "Datacolor SpyderX" to use this new feature and deprecate this warning info\n '...
+                    'Please switch the driver back to "Datacolor SpyderX" to enable this new feature and remove this warning info\n '...
                     '[right-click and select Upate Driver, then select Search automatically for updated driver software]\n']);
-            deviceType = 2;
     end
 end
 
