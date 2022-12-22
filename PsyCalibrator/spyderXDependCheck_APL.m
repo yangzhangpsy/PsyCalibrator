@@ -6,34 +6,33 @@ function status = spyderXDependCheck_APL()
 %    written by Yang Zhang
 %    2022-12-22
 
-    persistent spyderXDependPsychHID_APL
+persistent spyderXDependPsychHID_APL
 
-    if isempty(spyderXDependPsychHID_APL)
+if isempty(spyderXDependPsychHID_APL)
+    status = 0;
 
-        status = 0;
+    % Check PsychHID version
+    v = PsychHID('Version');
 
-        % Check PsychHID version
-        v = PsychHID('Version');
-
-        if v.build < 638515007
-            status = 1;
-        end
-
-        % Check spyderX driver
-
-        if ~status
-            try
-                spyderX('initial'); % to save the time
-            catch
-                % wrong driver or not spyderX
-                status = 2;
-            end
-        end
-
-         spyderXDependPsychHID_APL = status;
-    else
-        status = spyderXDependPsychHID_APL;
+    if v.build < 638515007
+        status = 1;
     end
+
+    % Check spyderX driver
+
+    if ~status
+        try
+            spyderX('initial'); % to save the time
+        catch
+            % wrong driver or not spyderX
+            status = 2;
+        end
+    end
+
+     spyderXDependPsychHID_APL = status;
+else
+    status = spyderXDependPsychHID_APL;
+end
 
 
 

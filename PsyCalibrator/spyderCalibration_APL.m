@@ -33,4 +33,5 @@ if spyderXDependCheck_APL
 
 else
     spyderX('calibration');
+    fprintf('Calibration done!\n');
 end
