@@ -65,7 +65,8 @@ switch lower(command)
     case 'calibration'
         % do zero point calibration
         if ~isfield(spyderData, 'isOpen') || ~spyderData.isOpen
-            error('SpyderX did not initialized, please run spyderData(''initial''); first!');
+            spyderX('initial'); % Now, automatically run the initial command
+%            error('SpyderX did not initialized, please run spyderX(''initial''); first!');
         end
         
         
