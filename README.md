@@ -36,7 +36,7 @@ This is the step-by-step photometer tutorial portion of the article. The tutoria
 
 <h2 id="2">Step 2: Install Spyder driver</h2>
 
-:bangbang::red_circle::red_circle::red_circle:_**If you are using `SpyderX` and `Psychtoolbox` version equal to or later than `3.0.19` Beta (update “Virtuality” was released at 17th February 2023), skip the whole Step 2 as we used the new version of PsychHID and the default driver built in Window 10/11 to communicate with SpyderX.**_:red_circle::red_circle::red_circle:
+:red_circle::red_circle::red_circle:_**If you are using the SpyderX hardware in conjunction with a version of Psychtoolbox that is after 3.0.19 (note that the "Virtuality" update was released on February 17th, 2023), you can proceed directly to Step 3. This is because the new versions of Psychtoolbox come with an added USBbulktransfer function, which enables us to support the use of the built-in drivers in Windows for controlling the SpyderX hardware.**_:red_circle::red_circle::red_circle:
 
 If you are using Linux or Mac, there is no need to install the driver for the photometer. But if you are using Windows, you need to install the driver for the photometer. To check whether the driver is already installed, insert the device (e.g., `Spyder5`) into a USB port on the computer. Then open the "**Device Manager**" menu in Windows Settings (you can search "**Device Manager**" in the search bar at the bottom left of the desktop). If the driver has already been installed, you should see a USB icon showing “`Spyder5 (Argyll)`”, as highlighted in the red rectangle in Figure 1.
 
