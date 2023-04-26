@@ -219,7 +219,7 @@ catch
             end
         end
         checkmono = mc_CheckMonotoneIncrease(output);
-        disp('Repetition: %03d/%03d',repetition,max_repeat);
+        fprintf('Repetition: %03d/%03d\n',repetition,max_repeat);
         repetition=repetition+1;
     end
     
