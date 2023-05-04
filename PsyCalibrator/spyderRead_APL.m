@@ -22,7 +22,7 @@ try
     elseif IsLinux
         commandStr = [fullfile(cFolder,'spotread'),' -e -O -x -N'];
     else % mac ox
-        commandStr = [fullfile(cFolder,'spsotreadsMac','spotread'),' -e -O -x -N'];
+        commandStr = [fullfile(cFolder,'spotreadsMac','spotread'),' -e -O -x -N'];
     end
     
     xyY      = zeros(nMeasures,3);
