@@ -19,7 +19,7 @@ if spyderXDependCheck_APL
     elseif IsLinux
         commandStr = [fullfile(cFolder,'spotread'),' -e -O -x'];
     else % mac ox
-        commandStr = [fullfile(cFolder,'spsotreadsMac','spotread'),' -e -O -x'];
+        commandStr = [fullfile(cFolder,'spotreadsMac','spotread'),' -e -O -x'];
     end
 
 
