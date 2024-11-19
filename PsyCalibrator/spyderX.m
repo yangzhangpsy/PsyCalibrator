@@ -23,12 +23,29 @@ persistent spyderData usbHandle
 %  2022-10-02
 
 
+
+
+
+
+
+
 XYZ = [];
 
 switch lower(command)
     
     case 'initial'
-        usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), hex2dec('0A00'));
+
+        %  SpyderX  VID=085C PID=0A00
+        %  SpyderX2 VID=085C PID=0A0A
+
+        pids = [hex2dec('0A00'),hex2dec('0A0A')];
+        for iPID = 1:numel(pids)
+            try
+                usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), pids(iPID));
+                break;
+            end
+        end
+%        usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), hex2dec('0A00'));
         PsychHID('USBClaimInterface', usbHandle, 0); % to explicitly claim the inferface
         PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0,   1, 0);    % clear feature Request
         PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0, 129, 0);  % clear feature Request
