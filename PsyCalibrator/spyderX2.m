@@ -1,4 +1,4 @@
-function [XYZ] = spyderX2(command)
+function [XYZ] = spyderX(command)
 persistent spyderData usbHandle
 % The function is aimed to use PsychHID to control spyderX
 %
@@ -10,17 +10,23 @@ persistent spyderData usbHandle
 %  XYZ: 1*3 double: the measured XYZ in 1931 CIEXYZ color coordinate: works only for measure command
 %
 %  Useage:
-%  spyderX2('initial');     % initialize SpyderX
-%  spyderX2('calibration'); % after capping up SpyderX, do zero point calibration.
+%  spyderX('initial');     % initialize SpyderX
+%  spyderX('calibration'); % after capping up SpyderX, do zero point calibration.
 %
 %   %your codes maybe a for loop
-%  XYZ = spyderX2('measure'); % get a measure
+%  XYZ = spyderX('measure'); % get a measure
 %
-%  spyderX2('close'); % close and clean all info
+%  spyderX('close'); % close and clean all info
 %
 %  Written by Yang Zhang, Soochow University
 %  zhangyang873@gmail.com
 %  2022-10-02
+
+
+
+
+
+
 
 
 XYZ = [];
@@ -28,7 +34,11 @@ XYZ = [];
 switch lower(command)
     
     case 'initial'
-        usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), hex2dec('0A00'));
+
+        %  SpyderX  VID=085C PID=0A00
+        %  SpyderX2 VID=085C PID=0A0A
+        usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), hex2dec('0A0A'));
+
         PsychHID('USBClaimInterface', usbHandle, 0); % to explicitly claim the inferface
         PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0,   1, 0);    % clear feature Request
         PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0, 129, 0);  % clear feature Request
@@ -39,27 +49,28 @@ switch lower(command)
         %   0: cmd
         % 1:2: nonce = 0xffff & rand32(0)
         % 3:4: send size
-        
-        out = bulkTransfer(usbHandle, uint8([0xd9 0x42 0x33 0x00 0x00]), 28);
+        %                                                                28 = 0x17 + 5
+        out = bulkTransfer(usbHandle, uint8([0xc2 0x42 0x33 0x00 0x00]), 42);
+%        out = bulkTransfer(usbHandle, uint8([0xc2 0x42 0x33 0x00 0x00]), 28);
         spyderData.HWvn = decodeHWverNo(out);
-        
-        % get serial number
-        out = bulkTransfer(usbHandle, uint8([0xc2 0x5c 0x37 0x00 0x00]), 42);
+
         spyderData.serNo = decodeSerNo(out);
         
         % get the factory Calibration data not the black calibration Data
-        out = bulkTransfer(usbHandle, uint8([0xcb 0x05 0x73 0x00 0x01 0x00]), 47);
+%        out = bulkTransfer(usbHandle, uint8([0xcb 0x05 0x73 0x00 0x01 0x00]), 47);
+        out = bulkTransfer(usbHandle, uint8([0xf6 0x5c 0x37 0x00 0x01 0x00]), 108+5);
         spyderData.calibration = decodeCalibration(out);
         spyderData.isOpen = true; %#ok<*STRNU>
         
         % get Amb measure
         % for amb measure the integration time and gain setting are fixed to 0x65 and 0x10, respectively
-        out = bulkTransfer(usbHandle, uint8([0xd4 0xa1 0xc5 0x00 0x02 0x65 0x10]), 11);
+        out = bulkTransfer(usbHandle, uint8([0xd4 0x05 0x73 0x00 0x02 0x65 0x10]), 11);
         spyderData.amb = decodeAmbCalibration(out);
         
         % measure setting up
         % the send[0]--- v1 0x03
-        out = bulkTransfer(usbHandle, uint8([0xc3 0x29 0x27 0x00 0x01 spyderData.calibration.v1]), 15);
+%        out = bulkTransfer(usbHandle, uint8([0xc3 0x29 0x27 0x00 0x01 spyderData.calibration.v1]), 15);
+        out = bulkTransfer(usbHandle, uint8([0xf7 0xa1 0xc5 0x00 0x01 spyderData.calibration.v1]), 27);
         spyderData.settUp = decodeSettUp(out);
         
     case 'calibration'
@@ -71,18 +82,19 @@ switch lower(command)
         
         
         PsychHID('USBControlTransfer', usbHandle, double(0x41),2, 2, 0, 0);    % URB_CONTROL out spyder reset
-        v2 = dec2hex(spyderData.calibration.v2, 4);
         s1 = spyderData.settUp.s1;
         s2 = spyderData.settUp.s2;
-        
-        send = uint8([hex2dec(v2(1:2)),hex2dec(v2(1:2)),s1,s2]);
-        % []
-        out = bulkTransfer(usbHandle, uint8([0xd2 0x3f 0xb9 0x00 0x07 send]), 13);
+        s3 = spyderData.settUp.s3;
+        s4 = spyderData.settUp.s4;
+        s5 = spyderData.settUp.s5;
+
+        send = uint8([hex2dec([s2,s1,s3,s4]);
+
+        out = bulkTransfer(usbHandle, uint8([0xf2 0x29 0x27 0x00 0x0f send]), 17);
         raw = decodeMeasure(out);
         
-        spyderData.bcal = raw(1:3) - spyderData.settUp.s3(1:3);
+        spyderData.bcal = raw - spyderData.settUp.s5;
         spyderData.isBlackCal = true;
-        
         
     case 'measure'
         if ~isfield(spyderData, 'isOpen') || ~spyderData.isOpen
@@ -94,20 +106,24 @@ switch lower(command)
         end
         
         PsychHID('USBControlTransfer', usbHandle, double(0x41),2, 2, 0, 0);    % URB_CONTROL out spyder reset
-        % [0xd2 0x3f 0xb9 0x00 0x07 0x02 0xca 0x03 0xe1 0xa1 0xa1 0x00 ]
-        v2 = dec2hex(spyderData.calibration.v2, 4);
         s1 = spyderData.settUp.s1;
         s2 = spyderData.settUp.s2;
-        
-        send = uint8([hex2dec(v2(1:2)),hex2dec(v2(1:2)),s1,s2]);
+        s3 = spyderData.settUp.s3;
+        s4 = spyderData.settUp.s4;
+        s5 = spyderData.settUp.s5;
+
+        send = uint8([hex2dec([s2,s1,s3,s4]);
         % []
-        out = bulkTransfer(usbHandle, uint8([0xd2 0x3f 0xb9 0x00 0x07 send]), 13);
+%       out = bulkTransfer(usbHandle, uint8([cmd rand rand sendsize sendsize send]), 13);
+        out = bulkTransfer(usbHandle, uint8([0xf2 0x29 0x27 0x00 0xf send]), 17);
         raw = decodeMeasure(out);
         
-        raw(1:3) = raw(1:3) - spyderData.settUp.s3(1:3) - spyderData.bcal(1:3);
+        raw = raw - spyderData.settUp.s5 - spyderData.bcal;
         
-        XYZ = raw(1:3)*spyderData.calibration.matrix;
-        
+        XYZ = raw*transpose(spyderData.calibration.matrix);
+
+        XYZ = XYZ.*spyderData.calibration.gain + spyderData.calibration.off;
+
     case 'close'
         PsychHID('CloseUSBDevice',usbHandle);
         %    	spyderData.isOpen = false;
@@ -141,7 +157,7 @@ end
 % decode ambCalibration
 %%%%%%%%%%%%%%%%%%%%%%%%
 function amb = decodeAmbCalibration(out)
-%    decode amb measure info
+%    decode amb measure info: has no change from spyderX
 out(1:5) = [];
 amb(1) = read_nORD_be(out(1:2));
 amb(2) = read_nORD_be(out(3:4));
@@ -155,9 +171,15 @@ end
 function settUp = decodeSettUp(out)
 %    decode instrument info
 out(1:5) = [];
-settUp.s1(1) = read_nORD_be(out(1));
-settUp.s2 = [read_nORD_be(out(2)), read_nORD_be(out(3)), read_nORD_be(out(4)), read_nORD_be(out(5))];
-settUp.s3 = [read_nORD_be(out(6)), read_nORD_be(out(7)), read_nORD_be(out(8)), read_nORD_be(out(9))];
+
+settUp.s1 = out(3);
+settUp.s2 = out(1:2)
+settUp.s3 = out(4:9);
+settUp.s4 = out(10:15);
+%settUp.s5 = out(16:21);
+for i = 1:6
+	settUp.s5(i) = read_nORD_be(out(15+i));
+end
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -166,9 +188,9 @@ end
 function raw = decodeMeasure(out)
 %    decode measure info
 out(1:5) = [];
-raw = zeros(1,3);
+raw = zeros(1,6);
 
-for iCol = 1:4
+for iCol = 1:6
     raw(iCol) = read_nORD_be(out(2*(iCol - 1) + (1:2) ));
 end
 
@@ -181,28 +203,43 @@ function calibration = decodeCalibration(out)
 %decode get factory calibration info
 out(1:5) = [];
 
-mat = zeros(3);
-v1  = out(2);                 % 03
-v2  = read_nORD_be(out(3:4)); % 02 ca
-v3  = out(41);
+mat  = zeros(3, 6);
+gain = zeros(1, 3);
+off  = zeros(1, 3);
 
-k = 0;
+v1   = out(2);                 % 03
+v2   = read_nORD_be(out(3:4)); % 02 ca
+v3   = out(107);
 
-for iRow = 1:3
-    for iCol = 1:3
-        mat(iRow, iCol) = read_IEEE754(out(k*4+5:k*4+5+4-1));
-        k = k+1;
+v4 = zeros(1,6);
+for iRow = 1:6
+    v4(iRow) = read_IEEE754(out(5 + iRow -1));
+end
+
+for i = 1:3
+    for j = 1:6
+        mat(i, j) = read_IEEE754(out(11 + ((j - 1) * 3 + (i - 1) ) * 4:14 + ((j - 1) * 3 + (i - 1) ) * 4));
+%       mat(i, j) = typecast(out(11 + ((j - 1) * 3 + (i - 1) ) * 4:14 + ((j - 1) * 3 + (i - 1) ) * 4), 'single');
     end
-    
+end
+
+# gain and off values
+for j = 1:3
+    gain(j) = read_IEEE754(out(83 + (j - 1) * 2 * 4:86 + (j - 1) * 2 * 4));
+    off(j)  = read_IEEE754(out(83 + (j - 1) * 2 * 4 + 4:86 + (j - 1) * 2 * 4 + 4));
 end
 
 calibration.matrix = mat;
+
 calibration.v1 = v1;
 calibration.v2 = v2;
 calibration.v3 = v3;
+calibration.v4 = v4;
+
+calibration.gain = gain;
+calibration.off  = off;
 
 calibration.ccmat = diag([1 1 1]);
-
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%

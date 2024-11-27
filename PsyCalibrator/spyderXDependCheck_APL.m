@@ -16,12 +16,15 @@ if isempty(spyderXDependPsychHID_APL)
 
     if v.build < 638479169 % mac 631740375/638479169 win 602983213/638515007 linux 603172579/640684315
         status = 1;
+
+        spyderXDependPsychHID_APL = status;
+        return
     end
 
     % Check spyderX driver
     if ~status
         try
-            spyderX('initial'); % to save the time
+            spyderXn('initial'); % to save the time
         catch
             % wrong driver or not spyderX
             status = 2;

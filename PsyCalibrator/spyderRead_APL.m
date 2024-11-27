@@ -45,7 +45,7 @@ try
                 XYZ          = sscanf(out(iStart:end), 'Result is XYZ: %f %f %f');
                 %-----------------------\
             else
-                XYZ = spyderX('measure')';
+                XYZ = spyderXn('measure')';
             end
 
             nMaxMeasures = nMaxMeasures + 1;
