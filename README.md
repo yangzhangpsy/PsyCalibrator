@@ -22,9 +22,9 @@ This is the step-by-step photometer tutorial portion of the article. The tutoria
 <h2 id="1">Step 1: Obtain required instrument and software</h2>
 
 1. **Instrument:** 
-`Spyder5` or `SpyderX`
+`Spyder5` or `SpyderX/X2`
 
-   **Note:** _`SpyderX` is the newer model. For both `Spyder5` and `SpyderX`, there are different versions available, but the only difference between the different versions (e.g., Express, Pro, and Elite) is the accompanying software package provided by Spyder. Since our calibration method does not use this provided software but only the hardware, any version of Spyder will work._
+   **Note:** _`SpyderX/X2` is the newer model. For both `Spyder5` and `SpyderX/X2`, there are different versions available, but the only difference between the different versions (e.g., Express, Pro, and Elite) is the accompanying software package provided by Spyder. Since our calibration method does not use this provided software but only the hardware, any version of Spyder will work._
 
 
 2. **A computer with the following software**: 
@@ -36,7 +36,7 @@ This is the step-by-step photometer tutorial portion of the article. The tutoria
 
 <h2 id="2">Step 2: Install Spyder driver</h2>
 
-:red_circle::red_circle::red_circle:_****a)** If you are using the `SpyderX` hardware and versions of `Psychtoolbox` equal to or after 3.0.19 (note that the "Virtuality" update was released on February 17th, 2023), or **b)** if the returned information by running `PsychHID` in MATLAB, contains the following content(`[countOrRecData] = PsychHID('USBBulkTransfer', usbHandle, endPoint, length [, outData][, timeOutMSecs=10000])`), You can proceed directly to [Step 3](#3). This is because the new versions of Psychtoolbox come with an added USBbulktransfer function, which enables us to support the use of the built-in drivers in Windows 10/11 for controlling the `SpyderX` hardware.**_:red_circle::red_circle::red_circle:
+:red_circle::red_circle::red_circle:_****a)** If you are using the `SpyderX/X2` hardware and versions of `Psychtoolbox` equal to or after 3.0.19 (note that the "Virtuality" update was released on February 17th, 2023), or **b)** if the returned information by running `PsychHID` in MATLAB, contains the following content(`[countOrRecData] = PsychHID('USBBulkTransfer', usbHandle, endPoint, length [, outData][, timeOutMSecs=10000])`), You can proceed directly to [Step 3](#3). This is because the new versions of Psychtoolbox come with an added USBbulktransfer function, which enables us to support the use of the built-in drivers in Windows 10/11 for controlling the `SpyderX/X2` hardware.**_:red_circle::red_circle::red_circle:
 
 If you are using Linux or Mac, there is no need to install the driver for the photometer. But if you are using Windows, you need to install the driver for the photometer. To check whether the driver is already installed, insert the device (e.g., `Spyder5`) into a USB port on the computer. Then open the "**Device Manager**" menu in Windows Settings (you can search "**Device Manager**" in the search bar at the bottom left of the desktop). If the driver has already been installed, you should see a USB icon showing “`Spyder5 (Argyll)`”, as highlighted in the red rectangle in Figure 1.
 
@@ -51,7 +51,7 @@ On the other hand, if the driver has not been installed, then you may see an exc
 
 **Figure 2. Device Manager showing the Spyder device with the driver not installed.**
 
-2.1. First, right-click on the device name “Datacolor `Spyder5`” (or “Datacolor `SpyderX`”), which should open up a menu as in Figure 3. Click "Update driver".
+2.1. First, right-click on the device name “Datacolor `Spyder5`” (or “Datacolor `SpyderX/X2`”), which should open up a menu as in Figure 3. Click "Update driver".
 
  ![image](https://raw.githubusercontent.com/yangzhangpsy/PsyCalibrator/main/PsyCalibrator/figs/f3.png)
  
@@ -125,7 +125,7 @@ The above steps are for luminance and color measurement. When a linear relation 
 
 Before calibration, make sure that no direct light shines on the monitor panel and that the monitor is turned on for at least 60 minutes to allow time for warm-up. When ready, follow the steps below to begin the calibration process.
 
-5.1. Run the following command in MATLAB: "gammaMeasure_APL(deviceType)", where deviceType refers to the type of the Spyder device: 1 for `Spyder5`; and 2 for `SpyderX`. (For individual RGB channel calibration, use "gammaMeasure_APL(deviceType,[],[],[],[],[],[],2)".)
+5.1. Run the following command in MATLAB: "gammaMeasure_APL(deviceType)", where deviceType refers to the type of the Spyder device: 1 for `Spyder5`; and 2 for `SpyderX/X2`. (For individual RGB channel calibration, use "gammaMeasure_APL(deviceType,[],[],[],[],[],[],2)".)
 
         >> gammaMeasure_APL(deviceType,[],[],[],[],[],[],2);
 
@@ -188,7 +188,7 @@ The fitting result is saved to a new file within the same directory, named **Gam
 
         >> gammaMeasure_APL(deviceType,[],[],[],Gamma.gammaTable);
 
-where deviceType refers to the type of test device: 1 for `Spyder5` and 2 for `SpyderX`. The procedure is the same as in Steps 5.2 to 5.7 above. Finally, the results are saved to the file “**Gamma_verification.mat**” (Figure 17). Linearity is visualized with a figure showing the relation between RGB and luminance (from the variable xyY in **Gamma_verification.mat**; Figure 18). For color channel calibration, use:
+where deviceType refers to the type of test device: 1 for `Spyder5` and 2 for `SpyderX/X2`. The procedure is the same as in Steps 5.2 to 5.7 above. Finally, the results are saved to the file “**Gamma_verification.mat**” (Figure 17). Linearity is visualized with a figure showing the relation between RGB and luminance (from the variable xyY in **Gamma_verification.mat**; Figure 18). For color channel calibration, use:
 
         >> gammaMeasure_APL(deviceType,[],[],[], Gamma.gammaTable,[],[],2);
         
@@ -221,3 +221,6 @@ To remove the correction (that is, to restore the display to its default status)
 <h2 id="8">Reference</h2>
 
 Ban, H., & Yamamoto, H. (2013). [A non-device-specific approach to display characterization based on linear, non-linear, and hybrid search algorithms](https://doi.org/10.1167/13.6.20). Journal of vision, 13(6):20, 1–26.
+
+<h2 id="9">Update Information</h2>
+Introduced compatibility with the SpyderX2 device. 2024/11/27
