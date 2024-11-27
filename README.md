@@ -18,7 +18,7 @@ This is the step-by-step photometer tutorial portion of the article. The tutoria
 * [Step 6: Data fitting](#6)
 * [Step 7: Apply or remove gamma correction](#7)
 * [Reference](#8)
-
+* [Update Information](#9)
 <h2 id="1">Step 1: Obtain required instrument and software</h2>
 
 1. **Instrument:** 
