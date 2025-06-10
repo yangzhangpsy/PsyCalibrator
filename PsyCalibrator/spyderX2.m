@@ -14,7 +14,7 @@ persistent spyderData usbHandle
 %  spyderX2('calibration'); % after capping up SpyderX, do zero point calibration.
 %
 %   %your codes maybe a for loop
-%  XYZ = spyderX('measure'); % get a measure
+%  XYZ = spyderX2('measure'); % get a measure
 %
 %  spyderX2('close'); % close and clean all info
 %
@@ -77,7 +77,7 @@ switch lower(command)
         % do zero point calibration
         if ~isfield(spyderData, 'isOpen') || ~spyderData.isOpen
             spyderX2('initial'); % Now, automatically run the initial command
-%            error('SpyderX did not initialized, please run spyderX(''initial''); first!');
+%            error('SpyderX2 did not initialized, please run spyderX2(''initial''); first!');
         end
         
         
@@ -98,11 +98,11 @@ switch lower(command)
         
     case 'measure'
         if ~isfield(spyderData, 'isOpen') || ~spyderData.isOpen
-            error('SpyderX did not initialized, please run SpyderX(''initial''); first!');
+            error('SpyderX2 did not initialized, please run SpyderX2(''initial''); first!');
         end
         
         if ~isfield(spyderData, 'isBlackCal') || ~spyderData.isBlackCal
-            error('SpyderX did not carry out black calibration, please cap on spyderX and run SpyderX(''calibration''); first!');
+            error('SpyderX2 did not carry out black calibration, please cap on spyderX and run SpyderX2(''calibration''); first!');
         end
         
         PsychHID('USBControlTransfer', usbHandle, double(0x41),2, 2, 0, 0);    % URB_CONTROL out spyder reset
