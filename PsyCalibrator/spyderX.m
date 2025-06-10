@@ -1,4 +1,4 @@
-function [XYZ] = spyderX2(command)
+function [XYZ] = spyderX(command)
 persistent spyderData usbHandle
 % The function is aimed to use PsychHID to control spyderX
 %
@@ -10,13 +10,13 @@ persistent spyderData usbHandle
 %  XYZ: 1*3 double: the measured XYZ in 1931 CIEXYZ color coordinate: works only for measure command
 %
 %  Useage:
-%  spyderX2('initial');     % initialize SpyderX
-%  spyderX2('calibration'); % after capping up SpyderX, do zero point calibration.
+%  spyderX('initial');     % initialize SpyderX
+%  spyderX('calibration'); % after capping up SpyderX, do zero point calibration.
 %
 %   %your codes maybe a for loop
-%  XYZ = spyderX2('measure'); % get a measure
+%  XYZ = spyderX('measure'); % get a measure
 %
-%  spyderX2('close'); % close and clean all info
+%  spyderX('close'); % close and clean all info
 %
 %  Written by Yang Zhang, Soochow University
 %  zhangyang873@gmail.com
@@ -31,7 +31,7 @@ switch lower(command)
         usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), hex2dec('0A00'));
         PsychHID('USBClaimInterface', usbHandle, 0); % to explicitly claim the inferface
         PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0,   1, 0);    % clear feature Request
-        PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0, 129, 0);  % clear feature Request
+        PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0, 129, 0);    % clear feature Request
         PsychHID('USBControlTransfer', usbHandle, double(0x41), 2, 2,   0, 0);    % URB_CONTROL out
         
         % get hardware version number
