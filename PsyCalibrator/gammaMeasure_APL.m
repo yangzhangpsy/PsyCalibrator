@@ -4,7 +4,7 @@ function Gamma = gammaMeasure_APL(deviceType, inputRects,whichScreen,outputFilen
 % Usage: Gamma = gammaMeasure_APL(deviceType, inputRects,whichScreen,outputFilename,beTestedCLUT,skipInputScreenInfo,beTestedRGBs,LeaveTime,nMeasures)
 % Or:
 % argins:
-%            deviceType: the type of the measure device (1,2,3,4 for Spyder 5, Spyder X, CRS's ColorCal MKII , and PR670 respectively)
+%            deviceType: the type of the measure device (1,2,3,4,5 for Spyder 5, Spyder X, CRS's ColorCal MKII , PR670, and Spyder X2 respectively)
 %            inputRects: 4*n maxtrix for n Rects of the to be tested areas (default: 500*500 rect at the center of the last screen)
 %           whichScreen: index of the to be tested monitor [default max(Screen(''Screens''))]
 %        outputFilename: filename of the display calibration data file
@@ -21,7 +21,7 @@ function Gamma = gammaMeasure_APL(deviceType, inputRects,whichScreen,outputFilen
 % Department of Psychology, Soochow University
 % 2020/12/18 9:16:50
 
-persistent myCorrectionMatrix
+persistent myCorrectionMatrix, myDeviceType
 
 % ---- check input arguments ----/
 if ~exist('deviceType','var')||isempty(deviceType)
@@ -53,6 +53,7 @@ if ~exist('beTestedRGBs','var')||isempty(beTestedRGBs)
 end
 
 isCustomizedClut = true;
+myDeviceType = deviceType;
 
 if ~exist('beTestedCLUT','var')||isempty(beTestedCLUT)
     beTestedCLUT     = linspace(0,1,256)'*[1 1 1];
@@ -208,16 +209,16 @@ try
         
         % ---- calibrate the device ----/
         switch deviceType
-            case {1,2}
+            case {1,2,5}
                 % do measure or calibration(if necessary) once
                 spyderCalibration_APL(0);
                 
-                if deviceType == 2 && spyderXDependCheck_APL == 2
+                if ismember(deviceType, [2,5]) && spyderXDependCheck_APL == 2
                     % the driver is not datacolor SpyderX
                     cprintf([0 0 1],['=========================================== Warning ============================================\n'...
-                        'now PsyCalibrator can use PsychHID to control spyderX, which is better/faster than spotread, \n'...
-                        'However, you are still using the customized argyll driver [showed SpyderX (argyll) in the Device Manager list]\n'...
-                        'Please switch the driver back to "Datacolor SpyderX" to enable this new feature and remove this warning info\n '...
+                        'now PsyCalibrator can use PsychHID to control spyderX/X2, which is better/faster than spotread, \n'...
+                        'However, you are still using the customized argyll driver [showed SpyderX/X2 (argyll) in the Device Manager list]\n'...
+                        'Please switch the driver back to "Datacolor SpyderX/X2" to enable this new feature and remove this warning info\n '...
                         '[right-click and select Upate Driver, then select Search automatically for updated driver software]\n'...
                         '*================================================================================================\n']);
                 end
@@ -232,7 +233,7 @@ try
                 % PR670 do not need calibration, so we just initialize it
                 PR670init;
             otherwise
-                error('DeviceType should be either 1, 2, or 3, for Spyder 5, Spyder X, or CRS''s ColorCal MKII, respectively');
+                error('DeviceType should be either 1, 2, 3,4 , or 5, for Spyder 5, Spyder X, CRS''s ColorCal MKII, PR670, and Spyder X2, respectively');
         end
         %------------------------------\
     end
@@ -292,7 +293,7 @@ try
                 abortExp(w,gammaTableBack,EscapeKey);
                 
                 switch deviceType
-                    case {1,2}
+                    case {1,2,5}
                         % spyder 5 or X
                         cxyY = spyderRead_APL(refreshRate, 1);
                     case 3

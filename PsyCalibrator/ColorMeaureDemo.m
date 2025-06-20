@@ -1,4 +1,4 @@
-%A demonstration for color measurement via spyderX:
+%A demonstration for color measurement via spyderX/X2:
 %
 % To measure color (xyY coordinates), we need three steps:
 % 1) black calibration;
