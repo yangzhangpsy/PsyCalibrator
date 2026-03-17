@@ -88,7 +88,7 @@ switch lower(command)
         s4 = spyderData.settUp.s4;
         s5 = spyderData.settUp.s5;
 
-        send = uint8([hex2dec([s2,s1,s3,s4]);
+        send = uint8(hex2dec([s2,s1,s3,s4]));
 
         out = bulkTransfer(usbHandle, uint8([0xf2 0x29 0x27 0x00 0x0f send]), 17);
         raw = decodeMeasure(out);
@@ -112,7 +112,8 @@ switch lower(command)
         s4 = spyderData.settUp.s4;
         s5 = spyderData.settUp.s5;
 
-        send = uint8([hex2dec([s2,s1,s3,s4]);
+        send = uint8(hex2dec([s2,s1,s3,s4]));
+        % need to be confirmed
         % []
 %       out = bulkTransfer(usbHandle, uint8([cmd rand rand sendsize sendsize send]), 13);
         out = bulkTransfer(usbHandle, uint8([0xf2 0x29 0x27 0x00 0xf send]), 17);
@@ -280,4 +281,3 @@ PsychHID('USBBulkTransfer', usbHandle, 1, numel(cmd), cmd);
 out = PsychHID('USBBulkTransfer', usbHandle, 129, outSize);
 %[countOrRecData] = PsychHID('USBBulkTransfer', usbHandle, endPoint, length [, outData][, timeOutMSecs=10000])
 end
-

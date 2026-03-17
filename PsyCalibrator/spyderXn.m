@@ -2,7 +2,7 @@ function spyderXn(CMD)
     persistent myDeviceType
 
     if isempty(myDeviceType)
-        myDeviceType = 2; % spyderX
+        myDeviceType = 1; % spyderX
     end
 
     switch myDeviceType

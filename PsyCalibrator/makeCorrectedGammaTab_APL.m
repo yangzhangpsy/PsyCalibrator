@@ -46,7 +46,9 @@ if ~exist('isPlot','var')||isempty(isPlot)
 end
 
 
-warning off;
+warningState = warning;
+warningCleanup = onCleanup(@() warning(warningState));
+warning('off','all');
 
 RGBxyY          = Gamma.RGBxyY;
 greyIdx      = RGBxyY(:,1)==RGBxyY(:,2)&RGBxyY(:,1)==RGBxyY(:,3);
@@ -118,8 +120,6 @@ if isfield(Gamma,'gammaTable')
 end
 
 Gamma.gammaTable = repmat(greyLut(1,:)',[1,3]);
-
-warning on;
 
 
 %---- save the gamma corrected data ----/

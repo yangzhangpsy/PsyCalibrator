@@ -462,7 +462,7 @@ if sum(greenIdx) > 1
 end
 % BLUE
 blueIdx  = xyY(:,1)== 0 & xyY(:,2)== 0;
-if sum(greenIdx) > 1
+if sum(blueIdx) > 1
     data = xyY(blueIdx,:);
     
     xIndex = 3;
