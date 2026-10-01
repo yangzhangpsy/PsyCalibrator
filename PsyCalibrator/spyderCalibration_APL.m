@@ -1,8 +1,13 @@
-function spyderCalibration_APL(printPromptInfo)
+function spyderCalibration_APL(printPromptInfo,deviceType)
+% deviceType: 1 for Spyder5, 2 for SpyderX (default), 5 for SpyderX2.
 %    Written by Yang Zhang
 %    2021-01-14 20:12:55
 if ~exist('printPromptInfo','var')||isempty(printPromptInfo)
     printPromptInfo = 1;
+end
+
+if ~exist('deviceType','var')||isempty(deviceType)
+    deviceType = 2;
 end
 
 if printPromptInfo
@@ -11,15 +16,15 @@ if printPromptInfo
 end
 
 
-if spyderXDependCheck_APL
+if spyderXDependCheck_APL(deviceType)
     cFolder      = fileparts(mfilename('fullpath'));
 
     if IsWin
-        commandStr = [fullfile(cFolder,'spotread.exe'),' -e -O -x'];
+        commandStr = ['"',fullfile(cFolder,'spotread.exe'),'" -e -O -x'];
     elseif IsLinux
-        commandStr = [fullfile(cFolder,'spotread'),' -e -O -x'];
+        commandStr = ['"',fullfile(cFolder,'spotread'),'" -e -O -x'];
     else % mac ox
-        commandStr = [fullfile(cFolder,'spotreadsMac','spotread'),' -e -O -x'];
+        commandStr = ['"',fullfile(cFolder,'spotreadsMac','spotread'),'" -e -O -x'];
     end
 
 
@@ -32,6 +37,6 @@ if spyderXDependCheck_APL
     end
 
 else
-    spyderXn('calibration');
+    spyderXn('calibration',deviceType);
     fprintf('Calibration done!\n');
 end

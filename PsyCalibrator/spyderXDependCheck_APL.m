@@ -1,15 +1,26 @@
-function status = spyderXDependCheck_APL()
+function status = spyderXDependCheck_APL(deviceType)
 %    Check the dependences for spyderX via PsychHID equiped with bulk transfer
+%    deviceType: 1 for Spyder5, 2 for SpyderX (default), 5 for SpyderX2.
 %    argout:
 %    status  a double scale: 0,1,2 for spyderX with PsychHID, unsupported version of PsychHID, and wrong driver for spyderX, respectively
 %
 %    written by Yang Zhang
 %    2022-12-22
 
-persistent spyderXDependPsychHID_APL
+persistent spyderXDependPsychHID_APL cachedDeviceType
 
-if isempty(spyderXDependPsychHID_APL)
+if ~exist('deviceType','var')||isempty(deviceType)
+    deviceType = 2;
+end
+
+if deviceType == 1
+    status = 2; % Spyder5 uses spotread
+    return
+end
+
+if isempty(spyderXDependPsychHID_APL)||~isequal(cachedDeviceType,deviceType)
     status = 0;
+    cachedDeviceType = deviceType;
 
     % Check PsychHID version
     v = PsychHID('Version');
@@ -24,7 +35,7 @@ if isempty(spyderXDependPsychHID_APL)
     % Check spyderX driver
     if ~status
         try
-            spyderXn('initial'); % to save the time
+            spyderXn('initial',deviceType); % to save the time
         catch
             % wrong driver or not spyderX
             status = 2;

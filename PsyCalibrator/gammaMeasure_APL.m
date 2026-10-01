@@ -21,7 +21,7 @@ function Gamma = gammaMeasure_APL(deviceType, inputRects,whichScreen,outputFilen
 % Department of Psychology, Soochow University
 % 2020/12/18 9:16:50
 
-persistent myCorrectionMatrix, myDeviceType
+persistent myCorrectionMatrix
 
 % ---- check input arguments ----/
 if ~exist('deviceType','var')||isempty(deviceType)
@@ -53,7 +53,6 @@ if ~exist('beTestedRGBs','var')||isempty(beTestedRGBs)
 end
 
 isCustomizedClut = true;
-myDeviceType = deviceType;
 
 if ~exist('beTestedCLUT','var')||isempty(beTestedCLUT)
     beTestedCLUT     = linspace(0,1,256)'*[1 1 1];
@@ -105,6 +104,7 @@ end
 % begin
 %%%%%%%%%%%%%
 KbName('UnifyKeyNames');
+gammaTableBack = [];
 try
     commandwindow;
     %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -211,9 +211,9 @@ try
         switch deviceType
             case {1,2,5}
                 % do measure or calibration(if necessary) once
-                spyderCalibration_APL(0);
+                spyderCalibration_APL(0,deviceType);
                 
-                if ismember(deviceType, [2,5]) && spyderXDependCheck_APL == 2
+                if ismember(deviceType, [2,5]) && spyderXDependCheck_APL(deviceType) == 2
                     % the driver is not datacolor SpyderX
                     cprintf([0 0 1],['=========================================== Warning ============================================\n'...
                         'now PsyCalibrator can use PsychHID to control spyderX/X2, which is better/faster than spotread, \n'...
@@ -290,12 +290,12 @@ try
                     WaitSecs(0.1);
                 end
                 
-                abortExp(w,gammaTableBack,EscapeKey);
+                abortExp(whichScreen,gammaTableBack,EscapeKey);
                 
                 switch deviceType
                     case {1,2,5}
                         % spyder 5 or X
-                        cxyY = spyderRead_APL(refreshRate, 1);
+                        cxyY = spyderRead_APL(refreshRate, 1, deviceType);
                     case 3
                         % colorCal MKll
                         if IsWin
@@ -375,8 +375,10 @@ catch gammaMeasure_APL_error
     if deviceType == 4
         PR670close;
     end
+    if ~isempty(gammaTableBack)
+        Screen('LoadNormalizedGammaTable',whichScreen,gammaTableBack);
+    end
     save gammaMeasure_APL_debug;
-    Screen('LoadNormalizedGammaTable',whichScreen,linspace(0,1,256)'*[1 1 1]);
     ShowCursor;
     Priority(0);
     rethrow(gammaMeasure_APL_error);

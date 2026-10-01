@@ -107,6 +107,8 @@ After the custom driver is installed, Spyder is ready to take measurements of lu
 
         >> spyderCalibration_APL;
 
+To select the device explicitly, use `spyderCalibration_APL(1, deviceType)` and `spyderRead_APL(refreshRate, nMeasures, deviceType)`, where `deviceType` is 1 for Spyder5, 2 for SpyderX, and 5 for SpyderX2. For example, use `spyderCalibration_APL(1, 5)` and `spyderRead_APL(60, 5, 5)` for five measurements with a SpyderX2 on a 60 Hz display. Omitting `deviceType` retains the default SpyderX backend, with spotread fallback if unavailable.
+
 To measure the luminance/color of a stimulus on the monitor, simply open the cover and point the Spyder sensor closely to the target stimulus on the screen. Measurement is not limited to the stimuli on the screen—you can also use it to measure the luminance/color of things around you. For maximum accuracy and transparency, 1) make sure the sensor area is smaller than the stimulus, or else the measurement reflects not just the target stimulus but also the surrounding stimuli (if the target is too small, consider enlarging it); and 2) report the measurement distance (note that distance negatively affects luminance values if the object of interest is the sole or primary source of light).
 
 Then run：
@@ -125,7 +127,7 @@ The above steps are for luminance and color measurement. When a linear relation 
 
 Before calibration, make sure that no direct light shines on the monitor panel and that the monitor is turned on for at least 60 minutes to allow time for warm-up. When ready, follow the steps below to begin the calibration process.
 
-5.1. Run the following command in MATLAB: "gammaMeasure_APL(deviceType)", where deviceType refers to the type of the Spyder device: 1 for `Spyder5`; and 2 for `SpyderX/X2`. (For individual RGB channel calibration, use "gammaMeasure_APL(deviceType,[],[],[],[],[],[],2)".)
+5.1. Run the following command in MATLAB: "gammaMeasure_APL(deviceType)", where deviceType refers to the type of the Spyder device: 1 for `Spyder5`, 2 for `SpyderX`, and 5 for `SpyderX2`. (For individual RGB channel calibration, use "gammaMeasure_APL(deviceType,[],[],[],[],[],[],2)".)
 
         >> gammaMeasure_APL(deviceType,[],[],[],[],[],[],2);
 
@@ -188,7 +190,7 @@ The fitting result is saved to a new file within the same directory, named **Gam
 
         >> gammaMeasure_APL(deviceType,[],[],[],Gamma.gammaTable);
 
-where deviceType refers to the type of test device: 1 for `Spyder5` and 2 for `SpyderX/X2`. The procedure is the same as in Steps 5.2 to 5.7 above. Finally, the results are saved to the file “**Gamma_verification.mat**” (Figure 17). Linearity is visualized with a figure showing the relation between RGB and luminance (from the variable xyY in **Gamma_verification.mat**; Figure 18). For color channel calibration, use:
+where deviceType refers to the type of test device: 1 for `Spyder5`, 2 for `SpyderX`, and 5 for `SpyderX2`. The procedure is the same as in Steps 5.2 to 5.7 above. Finally, the results are saved to the file “**Gamma_verification.mat**” (Figure 17). Linearity is visualized with a figure showing the relation between RGB and luminance (from the variable xyY in **Gamma_verification.mat**; Figure 18). For color channel calibration, use:
 
         >> gammaMeasure_APL(deviceType,[],[],[], Gamma.gammaTable,[],[],2);
         

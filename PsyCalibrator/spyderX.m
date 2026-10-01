@@ -36,16 +36,7 @@ switch lower(command)
     case 'initial'
 
         %  SpyderX  VID=085C PID=0A00
-        %  SpyderX2 VID=085C PID=0A0A
-
-        pids = [hex2dec('0A00'),hex2dec('0A0A')];
-        for iPID = 1:numel(pids)
-            try
-                usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), pids(iPID));
-                break;
-            end
-        end
-%        usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), hex2dec('0A00'));
+        usbHandle = PsychHID('OpenUSBDevice', hex2dec('085C'), hex2dec('0A00'));
         PsychHID('USBClaimInterface', usbHandle, 0); % to explicitly claim the inferface
         PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0,   1, 0);    % clear feature Request
         PsychHID('USBControlTransfer', usbHandle, double(0x02), 1, 0, 129, 0);    % clear feature Request
@@ -92,7 +83,7 @@ switch lower(command)
         s1 = spyderData.settUp.s1;
         s2 = spyderData.settUp.s2;
         
-        send = uint8([hex2dec(v2(1:2)),hex2dec(v2(1:2)),s1,s2]);
+        send = uint8([hex2dec(v2(1:2)),hex2dec(v2(3:4)),s1,s2]);
         % []
         out = bulkTransfer(usbHandle, uint8([0xd2 0x3f 0xb9 0x00 0x07 send]), 13);
         raw = decodeMeasure(out);
@@ -116,7 +107,7 @@ switch lower(command)
         s1 = spyderData.settUp.s1;
         s2 = spyderData.settUp.s2;
         
-        send = uint8([hex2dec(v2(1:2)),hex2dec(v2(1:2)),s1,s2]);
+        send = uint8([hex2dec(v2(1:2)),hex2dec(v2(3:4)),s1,s2]);
         % []
         out = bulkTransfer(usbHandle, uint8([0xd2 0x3f 0xb9 0x00 0x07 send]), 13);
         raw = decodeMeasure(out);
@@ -226,7 +217,7 @@ end
 % read n ORD be
 %%%%%%%%%%%%%%%%%%%%%%%%
 function out = read_nORD_be(input)
-out = hex2dec(sprintf('%s',transpose(dec2hex(input)) ));
+out = hex2dec(sprintf('%s',transpose(dec2hex(input,2)) ));
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -260,4 +251,3 @@ PsychHID('USBBulkTransfer', usbHandle, 1, numel(cmd), cmd);
 out = PsychHID('USBBulkTransfer', usbHandle, 129, outSize);
 %[countOrRecData] = PsychHID('USBBulkTransfer', usbHandle, endPoint, length [, outData][, timeOutMSecs=10000])
 end
-

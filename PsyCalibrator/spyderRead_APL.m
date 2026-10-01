@@ -1,4 +1,5 @@
-function xyY = spyderRead_APL(refreshRate, nMeasures)
+function xyY = spyderRead_APL(refreshRate, nMeasures, deviceType)
+% deviceType: 1 for Spyder5, 2 for SpyderX (default), 5 for SpyderX2.
 % under linux, before runing this function, install the argyll first via the following commands in the terminal:
 % sudo apt-get install argyll
 % although it works, it do cost much more time than colorCal by around 8000 ms for each measures
@@ -15,14 +16,18 @@ try
         nMeasures = 5;
     end
 
+    if ~exist('deviceType','var')|| isempty(deviceType)
+        deviceType = 2;
+    end
+
     cFolder    = fileparts(mfilename('fullpath'));
     
     if IsWin
-        commandStr = [fullfile(cFolder,'spotread.exe'),' -e -O -x -N'];
+        commandStr = ['"',fullfile(cFolder,'spotread.exe'),'" -e -O -x -N'];
     elseif IsLinux
-        commandStr = [fullfile(cFolder,'spotread'),' -e -O -x -N'];
+        commandStr = ['"',fullfile(cFolder,'spotread'),'" -e -O -x -N'];
     else % mac ox
-        commandStr = [fullfile(cFolder,'spotreadsMac','spotread'),' -e -O -x -N'];
+        commandStr = ['"',fullfile(cFolder,'spotreadsMac','spotread'),'" -e -O -x -N'];
     end
     
     xyY      = zeros(nMeasures,3);
@@ -37,7 +42,7 @@ try
         XYZ = [];
 
         while isempty(XYZ)&& nMaxMeasures < 2 % try two times in maxmium
-            if spyderXDependCheck_APL
+            if spyderXDependCheck_APL(deviceType)
                 % ---- do it again -----/
                 [noused,out] = system(commandStr);
 
@@ -45,7 +50,7 @@ try
                 XYZ          = sscanf(out(iStart:end), 'Result is XYZ: %f %f %f');
                 %-----------------------\
             else
-                XYZ = spyderXn('measure')';
+                XYZ = spyderXn('measure',deviceType)';
             end
 
             nMaxMeasures = nMaxMeasures + 1;

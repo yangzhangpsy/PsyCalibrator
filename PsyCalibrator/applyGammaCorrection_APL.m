@@ -57,6 +57,9 @@ try
             end
         end
         
+        if size(beTestedCLUT,2) ~= 3 && size(beTestedCLUT,1) == 3
+            beTestedCLUT = beTestedCLUT';
+        end
         Screen('LoadNormalizedGammaTable',whichScreen,beTestedCLUT);
     else
         % reset back to linear

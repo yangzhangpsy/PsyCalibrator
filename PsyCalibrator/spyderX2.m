@@ -88,7 +88,7 @@ switch lower(command)
         s4 = spyderData.settUp.s4;
         s5 = spyderData.settUp.s5;
 
-        send = uint8(hex2dec([s2,s1,s3,s4]));
+        send = uint8([s2,s1,s3,s4]);
 
         out = bulkTransfer(usbHandle, uint8([0xf2 0x29 0x27 0x00 0x0f send]), 17);
         raw = decodeMeasure(out);
@@ -112,7 +112,7 @@ switch lower(command)
         s4 = spyderData.settUp.s4;
         s5 = spyderData.settUp.s5;
 
-        send = uint8(hex2dec([s2,s1,s3,s4]));
+        send = uint8([s2,s1,s3,s4]);
         % need to be confirmed
         % []
 %       out = bulkTransfer(usbHandle, uint8([cmd rand rand sendsize sendsize send]), 13);
@@ -214,7 +214,7 @@ v3   = out(107);
 
 v4 = zeros(1,6);
 for iRow = 1:6
-    v4(iRow) = read_IEEE754(out(5 + iRow -1));
+    v4(iRow) = read_nORD_be(out(5 + iRow -1));
 end
 
 for i = 1:3
@@ -224,7 +224,7 @@ for i = 1:3
     end
 end
 
-# gain and off values
+% gain and off values
 for j = 1:3
     gain(j) = read_IEEE754(out(83 + (j - 1) * 2 * 4:86 + (j - 1) * 2 * 4));
     off(j)  = read_IEEE754(out(83 + (j - 1) * 2 * 4 + 4:86 + (j - 1) * 2 * 4 + 4));
@@ -247,7 +247,7 @@ end
 % read n ORD be
 %%%%%%%%%%%%%%%%%%%%%%%%
 function out = read_nORD_be(input)
-out = hex2dec(sprintf('%s',transpose(dec2hex(input)) ));
+out = hex2dec(sprintf('%s',transpose(dec2hex(input,2)) ));
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%
