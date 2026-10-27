@@ -114,7 +114,9 @@ switch lower(command)
         
         raw(1:3) = raw(1:3) - spyderData.settUp.s3(1:3) - spyderData.bcal(1:3);
         
-        XYZ = raw(1:3)*spyderData.calibration.matrix;
+        % Matrix rows produce X/Y/Z from the three sensor channels.
+        % A row-vector measurement therefore multiplies the transpose.
+        XYZ = raw(1:3)*transpose(spyderData.calibration.matrix);
         
     case 'close'
         PsychHID('CloseUSBDevice',usbHandle);

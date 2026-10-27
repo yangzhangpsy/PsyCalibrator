@@ -121,6 +121,8 @@ switch lower(command)
         
         raw = raw - spyderData.settUp.s5 - spyderData.bcal;
         
+        % The decoded matrix is 3-by-6 (XYZ rows, sensor-channel columns).
+        % Keep the transpose when multiplying the six-channel row vector.
         XYZ = raw*transpose(spyderData.calibration.matrix);
 
         XYZ = XYZ.*spyderData.calibration.gain + spyderData.calibration.off;
